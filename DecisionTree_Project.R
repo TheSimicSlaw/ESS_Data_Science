@@ -7,12 +7,12 @@ library(caret)
 library(dplyr)
 
 ## Load datasets 
-central <- central_europe_clean_csv
-eastern <- eastern_europe_clean_csv
-nordics <- nordics_clean_csv
-southern <- southern_europe_clean_csv
-uk <- uk_clean_csv
-west_central <- wce_clean_csv
+central <- read.csv("central_europe_clean_csv.csv")
+eastern <- read.csv("eastern_europe_clean_csv.csv")
+nordics <- read.csv("nordics_clean_csv.csv")
+southern <- read.csv("southern_europe_clean_csv.csv")
+uk <- read.csv("uk_clean_csv.csv")
+west_central <- read.csv("wce_clean_csv.csv")
 
 ## Making Copies for Analysis
 central_2 <- central
