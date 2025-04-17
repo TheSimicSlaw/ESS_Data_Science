@@ -100,16 +100,35 @@ decision_tree_model <- function(data, region_name = "Region") {
   plot(tree_model)
   text(tree_model, pretty = 0)
   
-  return(invisible(list(confusion_matrix = conf_matrix, accuracy = accuracy)))
+  #return(invisible(list(confusion_matrix = conf_matrix, accuracy = accuracy)))
+  
+  return(tree_model)
 }
 
+# NOTE: get_prune_chart function does not have access to the training data from decision_tree_model
+# Fix(?) Move creating the training data set into another function that returns training set, 
+#          pass training set into both decision_tree_model and get_prune_chart
+# Hopefully this works
+
 # Call the function for each regions
-decision_tree_model(central_2, "Central Europe")
-decision_tree_model(eastern_2, "Eastern Europe")
-decision_tree_model(nordics_2, "Nordics")
-decision_tree_model(southern_2, "Southern Europe")
-decision_tree_model(uk_2, "UK")
-decision_tree_model(west_central_2, "Western Central Europe")
+central_tree <- decision_tree_model(central_2, "Central Europe")
+eastern_tree <- decision_tree_model(eastern_2, "Eastern Europe")
+nordic_tree <- decision_tree_model(nordics_2, "Nordics")
+southern_tree <- decision_tree_model(southern_2, "Southern Europe")
+UK_tree <- decision_tree_model(uk_2, "UK")
+west_tree <- decision_tree_model(west_central_2, "Western Central Europe")
+
+get_prune_chart <- function(tree, tree_data, max_nodes) {
+  prune_results <- cv.tree(tree,FUN = prune.misclass)
+  
+  par(c(1,2))
+  plot(prune_results$size, prune_results$dev, type = "b")
+  plot(prune_results$k, prune_results$dev, type = "b")
+  
+  return(prune_results)
+}
+
+get_prune_chart(eastern_tree, eastern_2, 23)
 
 
 random_forest_model <- function(region_data, region_name) {
