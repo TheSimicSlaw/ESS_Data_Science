@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>DecisionTreePlots</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="DecisionTreesPlots_files/libs/clipboard/clipboard.min.js"></script>
+<script src="DecisionTreesPlots_files/libs/quarto-html/quarto.js"></script>
+<script src="DecisionTreesPlots_files/libs/quarto-html/popper.min.js"></script>
+<script src="DecisionTreesPlots_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="DecisionTreesPlots_files/libs/quarto-html/anchor.min.js"></script>
+<link href="DecisionTreesPlots_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="DecisionTreesPlots_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="DecisionTreesPlots_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="DecisionTreesPlots_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="DecisionTreesPlots_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">DecisionTreePlots</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'tree' was built under R version 4.4.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'caret' was built under R version 4.4.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: ggplot2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: lattice</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'randomForest' was built under R version 4.4.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>randomForest 4.7-1.2</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Type rfNews() to see new features/changes/bug fixes.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'randomForest'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    combine</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:ggplot2':
+
+    margin</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'doParallel' was built under R version 4.4.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: foreach</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'foreach' was built under R version 4.4.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: iterators</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'iterators' was built under R version 4.4.3</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: parallel</code></pre>
+</div>
+</div>
+<section id="central-europe" class="level3">
+<h3 class="anchored" data-anchor-id="central-europe">Central Europe</h3>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Confusion Matrix for Central Europe ===
+         Actual
+Predicted High Low Medium
+   High     78  19     42
+   Low      21  74     44
+   Medium   45  51     58
+
+Accuracy for Central Europe: 48.61%
+
+Decision Tree for Central Europe :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== PRUNED Confusion Matrix for Central Europe ===
+         Actual
+Predicted High Low Medium
+   High     71  15     31
+   Low      21  74     44
+   Medium   52  55     69
+
+Pruned Accuracy for Central Europe: 49.54%
+
+Pruned Tree for Central Europe :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-2-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Central Europe Random Forest Variable Importance              High         Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
+ppltrst  4.0999688  0.08054297   2.959753             4.872513         156.8066
+pplhlp  12.9452133 -2.32703289   2.048990            12.607562         165.3941
+pplfair 15.2396092 -3.70057592   1.254504            14.824453         157.8610
+trstprl 22.8736800  5.32600081   6.195869            24.697960         125.9281
+trstlgl 18.0948691  8.68589627   1.262577            19.512029         143.3735
+trstplc  9.2426589  7.01386954   1.439649            10.714278         153.7541
+trstplt 41.2376497 -9.11732413 -13.950927            38.058867         130.4949
+trstprt 36.2896715 -4.53465454 -12.021190            33.265963         129.5628
+trstsci  0.3086722 19.40376864  14.772521             7.227775         160.5054</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-2-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>[analysis]</p>
+</section>
+<section id="eastern-europe" class="level3">
+<h3 class="anchored" data-anchor-id="eastern-europe">Eastern Europe</h3>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Confusion Matrix for Eastern Europe ===
+         Actual
+Predicted High Low Medium
+   High     23  14     15
+   Low      24  39     31
+   Medium   31  25     32
+
+Accuracy for Eastern Europe: 40.17%
+
+Decision Tree for Eastern Europe :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== PRUNED Confusion Matrix for Eastern Europe ===
+         Actual
+Predicted High Low Medium
+   High     32  13     18
+   Low      30  51     38
+   Medium   16  14     22
+
+Pruned Accuracy for Eastern Europe: 44.87%
+
+Pruned Tree for Eastern Europe :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-3-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Eastern Europe Random Forest Variable Importance             High        Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
+ppltrst  7.632950 -4.0224276 -0.6742741             6.303199         76.05745
+pplhlp   5.686757 -1.5919728  0.4662417             5.183932         79.48397
+pplfair  7.768800 -2.0813473 -0.8346777             6.769542         75.69196
+trstprl  9.936465  2.9733539  1.3472451            10.713014         56.05078
+trstlgl 11.302375  1.6358846  1.6976037            11.622976         70.35363
+trstplc 12.389509  1.5410600  3.0859215            12.943056         78.76378
+trstplt  8.335689  0.3998364 -0.3409177             8.194828         46.87581
+trstprt  7.493819  1.0323245  0.1310602             7.471614         53.85369
+trstsci 10.889451  6.5776284  9.1361204            14.531124         78.80845</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-3-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>[analysis]</p>
+</section>
+<section id="southern-europe" class="level3">
+<h3 class="anchored" data-anchor-id="southern-europe">Southern Europe</h3>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Confusion Matrix for Southern Europe ===
+         Actual
+Predicted High Low Medium
+   High     79  55     63
+   Low      40  87     64
+   Medium   45  22     37
+
+Accuracy for Southern Europe: 41.26%
+
+Decision Tree for Southern Europe :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== PRUNED Confusion Matrix for Southern Europe ===
+         Actual
+Predicted High Low Medium
+   High     79  55     63
+   Low      40  87     64
+   Medium   45  22     37
+
+Pruned Accuracy for Southern Europe: 41.26%
+
+Pruned Tree for Southern Europe :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-4-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>SOuthern Europe Random Forest Variable Importance            High        Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
+ppltrst 22.24582 -3.2875894  2.5352474             21.29192         156.1478
+pplhlp  17.36293 -0.6494461 -3.7267072             15.88306         159.8679
+pplfair 18.78373  2.4974282  2.1120097             19.00667         150.6969
+trstprl 23.28586 -4.6447442 -0.3657281             22.85148         137.1359
+trstlgl 30.99441 -4.4441900  0.3752378             30.00829         140.2275
+trstplc 31.50324  3.2309465 -4.0572027             30.50261         153.8932
+trstplt 37.15071 -8.2325529 -3.9452577             35.90233         116.5866
+trstprt 30.50609 -1.5355346 -0.1263856             30.32206         120.2277
+trstsci 30.35444 13.5156505 10.0435928             33.39164         160.8961</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-4-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>[analysis]</p>
+</section>
+<section id="west-central-europe" class="level3">
+<h3 class="anchored" data-anchor-id="west-central-europe">West-Central Europe</h3>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Confusion Matrix for West-Central Europe ===
+         Actual
+Predicted High Low Medium
+   High     20   7      8
+   Low       5  18     11
+   Medium    5   5     11
+
+Accuracy for West-Central Europe: 54.44%
+
+Decision Tree for West-Central Europe :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== PRUNED Confusion Matrix for West-Central Europe ===
+         Actual
+Predicted High Low Medium
+   High     23   8      8
+   Low       3  12      8
+   Medium    4  10     14
+
+Pruned Accuracy for West-Central Europe: 54.44%
+
+Pruned Tree for West-Central Europe :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-5-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>West-Central Europe Random Forest Variable Importance             High        Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
+ppltrst  4.906544  3.6050131  1.7816672             5.620867         45.09680
+pplhlp   5.513005  2.2076716 -3.3233092             4.423856         47.24875
+pplfair 11.622698  5.9110053 -0.2936381            11.851505         43.68249
+trstprl  7.757958  5.0224087  7.2562385             9.763642         38.70897
+trstlgl 12.167167  0.8873016 -3.2060532            11.502534         40.91646
+trstplc  4.351688  5.2730895 -0.8249172             4.552433         44.45889
+trstplt 22.674996 -2.4703208 -3.4112115            21.288384         34.97446
+trstprt 12.721607  2.0833919 -0.4089200            12.525705         33.58041
+trstsci 10.397237  4.4681492 11.8820854            13.960416         53.06219</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-5-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>[analysis]</p>
+</section>
+<section id="nordics" class="level3">
+<h3 class="anchored" data-anchor-id="nordics">Nordics</h3>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Confusion Matrix for Nordics ===
+         Actual
+Predicted High Low Medium
+   High      7   5      4
+   Low       4   8      8
+   Medium    6   4      5
+
+Accuracy for Nordics: 39.22%
+
+Decision Tree for Nordics :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== PRUNED Confusion Matrix for Nordics ===
+         Actual
+Predicted High Low Medium
+   High     12   5      7
+   Low       3   8      4
+   Medium    2   4      6
+
+Pruned Accuracy for Nordics: 50.98%
+
+Pruned Tree for Nordics :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Nordics Random Forest Variable Importance              High       Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
+ppltrst  1.5897139 0.8918324  3.4392708             2.258262         24.55011
+pplhlp  -6.7530123 3.8348160  4.0745809            -5.507393         22.80661
+pplfair -2.2474202 3.4879342  3.0617463            -1.220657         24.16159
+trstprl  7.8669389 2.3628411  8.1430852             9.130615         22.46820
+trstlgl  0.2453475 2.7313289 -0.8762363             0.222505         22.36905
+trstplc  1.5686218 0.9865895  1.2630831             1.888796         25.80183
+trstplt 12.0907786 0.1593414 -2.4181135            11.897070         17.52783
+trstprt 16.7927291 2.0937679  2.6933871            17.110930         19.50056
+trstsci -9.2385179 3.8947907  5.9550350            -7.426115         26.56965</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-6-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>[analysis]</p>
+</section>
+<section id="united-kingdom" class="level3">
+<h3 class="anchored" data-anchor-id="united-kingdom">United Kingdom</h3>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Confusion Matrix for United Kingdom ===
+         Actual
+Predicted High Low Medium
+   High      9   9      8
+   Low       9  10     11
+   Medium    8   7      7
+
+Accuracy for United Kingdom: 33.33%
+
+Decision Tree for United Kingdom :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== PRUNED Confusion Matrix for United Kingdom ===
+         Actual
+Predicted High Low Medium
+   High     14   9     10
+   Low       6  12      6
+   Medium    6   5     10
+
+Pruned Accuracy for United Kingdom: 46.15%
+
+Pruned Tree for United Kingdom :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>United Kingdom Random Forest Variable Importance             High        Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
+ppltrst  5.259605  2.4520811 -3.9259039             4.345360         32.29426
+pplhlp  10.382465 -2.0391428 -1.5957698             9.254325         31.98007
+pplfair  9.744407 -1.6947394  2.6303583             9.828653         29.58750
+trstprl  8.037112  0.7345263 -2.6737864             7.198038         33.76075
+trstlgl  4.533143 -0.3317606 -3.2705426             3.438005         32.67346
+trstplc  5.477998  2.2894095 -0.1866881             5.545713         35.41817
+trstplt  9.110599 -1.0535141 -0.6559330             8.950974         26.85251
+trstprt 11.896245 -0.4366106 -2.8463314            10.944476         25.92292
+trstsci  8.352923  5.7619104  0.6253982             8.924867         35.75002</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-7-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>[analysis]</p>
+<hr>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
