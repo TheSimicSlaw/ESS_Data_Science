@@ -1,0 +1,65 @@
+---
+title: "Feature Importance using REF"
+author: "Team 20"
+date: "2025-04-18"
+output: html_document
+---
+
+options(repos = c(CRAN = "https://cloud.r-project.org"))
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE)
+library(png)
+library(grid)
+library(gridExtra)
+source("/Users/jacquelinesanchez/Documents/Github/ESS_Data_Science/RFE_on_all_regions.R")
+```
+
+
+```{r}
+
+central_results <- run_rfe_and_tree_combined_plot(central, "Central Europe")
+img <- readPNG("rfe_outputs/Central_Europe_combined.png")
+grid.raster(img)
+summary(central_results$tree)
+```
+
+
+```{r}
+eastern_results <- run_rfe_and_tree_combined_plot(eastern, "Eastern Europe")
+img <- readPNG("rfe_outputs/Eastern_Europe_combined.png")
+grid.raster(img)
+summary(eastern_results$tree)
+```
+
+```{r}
+nordics_results <- run_rfe_and_tree_combined_plot(nordics, "Nordics")
+img <- readPNG("rfe_outputs/Nordics_combined.png")
+grid.raster(img)
+summary(nordics_results$tree)
+```
+
+```{r}
+southern_results <- run_rfe_and_tree_combined_plot(southern, "Southern Europe")
+img <- readPNG("rfe_outputs/Southern_Europe_combined.png")
+grid.raster(img)
+summary(southern_results$tree)
+```
+
+
+```{r}
+uk_results <- run_rfe_and_tree_combined_plot(uk, "United Kingdom")
+img <- readPNG("rfe_outputs/United_Kingdom_combined.png")
+grid.raster(img)
+summary(uk_results$tree)
+```
+
+
+```{r}
+west_central_results <- run_rfe_and_tree(west_central, "Western Central Europe")
+img <- readPNG("rfe_outputs/Western_Central_Europe_combined.png")
+grid.raster(img)
+summary(west_central_results$tree)
+
+```
