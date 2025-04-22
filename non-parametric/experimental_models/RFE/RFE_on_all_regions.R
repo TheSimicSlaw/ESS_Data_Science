@@ -231,7 +231,7 @@ run_rfe_and_tree_combined_plot <- function(region_df, region_name, output_dir = 
 
 
 
-install.packages("png")
+# install.packages("png"). -- was causing issues rendering knit
 
 
 central_results <- run_rfe_and_tree_combined_plot(central, "Central Europe")
