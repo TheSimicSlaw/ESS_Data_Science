@@ -235,7 +235,7 @@ barplot(west_central_importance_sorted, las = 2, col = "goldenrod", main = "West
 
 par(mfrow = c(1, 1))
 
-## K-Fold Cross Validation Function (Scrappy_Jet)
+## K-Fold Cross Validation Function (Samuel)
 kfold_lda <- function(data, target_col, k = 5) {
   
   set.seed(123)  ## For reproducibility
@@ -275,3 +275,16 @@ print(nordics_cv_results)
 print(southern_cv_results)
 print(uk_cv_results)
 print(west_central_cv_results)
+
+#Overall Accuracy
+accuracies <- c(
+  central_cv_results$average_accuracy,
+  eastern_cv_results$average_accuracy,
+  nordics_cv_results$average_accuracy,
+  southern_cv_results$average_accuracy,
+  uk_cv_results$average_accuracy,
+  west_central_cv_results$average_accuracy
+)
+
+overall_average_accuracy <- mean(accuracies)
+print(overall_average_accuracy)
