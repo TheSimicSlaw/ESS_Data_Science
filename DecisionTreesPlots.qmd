@@ -112,7 +112,7 @@ run_pipeline <- function(region_data, region_name) {
 random_forest_model <- function(region_data, region_name) {
   set.seed(1)
   forest.train = sample(1:nrow(region_data), nrow(region_data)/2)
-  region.xtest = region_data[-forest.train, c(2:10)]
+  region.xtest = region_data[-forest.train, c(2:4, 6:11)]
   region.ytest = region_data[-forest.train, 12]
   region.forest = randomForest(dem_imp ~ ppltrst + pplhlp + pplfair + trstprl +
                                  trstlgl + trstplc + trstplt + trstprt +
@@ -124,11 +124,12 @@ random_forest_model <- function(region_data, region_name) {
   print(importance(region.forest))
   varImpPlot(region.forest, main = region_name)
   
-  #conf_mat <- table(predict(region.forest, region_data[-forest.train, 12]), central.data_split$test$dem_imp)
-  #conf_acc <- (conf_mat[1,1] + conf_mat[2,2] + conf_mat[3,3])/sum(conf_mat)
-  #cat("\n=== Random Forest Confusion Matrix for", region_name, "===\n")
-  #print(conf_mat)
-  #cat(sprintf("\nRandom Forest Accuracy for %s: %.2f%%\n", region_name, conf_acc*100))
+  region.pred <- predict(region.forest, region_data[-forest.train,])
+  conf_mat <- table(region.pred, region.ytest)
+  conf_acc <- (conf_mat[1,1] + conf_mat[2,2] + conf_mat[3,3])/sum(conf_mat)
+  cat("\n=== Random Forest Confusion Matrix for", region_name, "===\n")
+  print(conf_mat)
+  cat(sprintf("\nRandom Forest Accuracy for %s: %.2f%%\n", region_name, conf_acc*100))
   
   return(region.forest)
 }

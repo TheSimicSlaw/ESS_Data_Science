@@ -113,16 +113,16 @@ Pruned Tree for Central Europe :</code></pre>
 </div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Central Europe Random Forest Variable Importance              High         Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
-ppltrst  4.0999688  0.08054297   2.959753             4.872513         156.8066
-pplhlp  12.9452133 -2.32703289   2.048990            12.607562         165.3941
-pplfair 15.2396092 -3.70057592   1.254504            14.824453         157.8610
-trstprl 22.8736800  5.32600081   6.195869            24.697960         125.9281
-trstlgl 18.0948691  8.68589627   1.262577            19.512029         143.3735
-trstplc  9.2426589  7.01386954   1.439649            10.714278         153.7541
-trstplt 41.2376497 -9.11732413 -13.950927            38.058867         130.4949
-trstprt 36.2896715 -4.53465454 -12.021190            33.265963         129.5628
-trstsci  0.3086722 19.40376864  14.772521             7.227775         160.5054</code></pre>
+<pre><code>Central Europe Random Forest Variable Importance              High       Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
+ppltrst  4.0902980 -2.054502   3.913397             4.722438         155.6989
+pplhlp  12.3252504 -2.880887   2.483283            12.219370         164.5481
+pplfair 17.3746871 -3.858924   4.523031            17.485530         157.5022
+trstprl 23.9469106  5.621221   5.614728            25.939614         125.4086
+trstlgl 16.8485398  8.420437   3.891724            19.264587         142.5321
+trstplc  8.4948303  7.340642   1.002824             9.725273         155.4065
+trstplt 41.0717702 -7.298136 -13.316589            38.726834         129.8188
+trstprt 36.7191604 -2.536069 -10.262383            33.675689         127.3727
+trstsci -0.6307304 17.541912  14.702810             5.793368         158.9449</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -130,6 +130,17 @@ trstsci  0.3086722 19.40376864  14.772521             7.227775         160.5054<
 <p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-2-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Random Forest Confusion Matrix for Central Europe ===
+           region.ytest
+region.pred High  Low Medium
+     High   7087  241    494
+     Low       5    2      0
+     Medium    6    1      4
+
+Random Forest Accuracy for Central Europe: 90.47%</code></pre>
 </div>
 </div>
 <p>[analysis]</p>
@@ -186,15 +197,15 @@ Pruned Tree for Eastern Europe :</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Eastern Europe Random Forest Variable Importance             High        Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
-ppltrst  7.632950 -4.0224276 -0.6742741             6.303199         76.05745
-pplhlp   5.686757 -1.5919728  0.4662417             5.183932         79.48397
-pplfair  7.768800 -2.0813473 -0.8346777             6.769542         75.69196
-trstprl  9.936465  2.9733539  1.3472451            10.713014         56.05078
-trstlgl 11.302375  1.6358846  1.6976037            11.622976         70.35363
-trstplc 12.389509  1.5410600  3.0859215            12.943056         78.76378
-trstplt  8.335689  0.3998364 -0.3409177             8.194828         46.87581
-trstprt  7.493819  1.0323245  0.1310602             7.471614         53.85369
-trstsci 10.889451  6.5776284  9.1361204            14.531124         78.80845</code></pre>
+ppltrst  6.889980 -5.3335749 -1.8481021             5.051663         75.97363
+pplhlp   6.069161 -2.5308572 -2.2757363             4.487405         78.39719
+pplfair  7.926904 -2.1427176 -1.5547858             6.524497         76.44314
+trstprl  9.201684  3.6139616  0.4246170             9.541274         55.54261
+trstlgl 10.133462 -2.6680590  0.4368216             9.500642         69.92298
+trstplc 12.188130  2.6400667  0.8312947            12.140866         78.69794
+trstplt  9.544265 -1.5418680 -2.5186067             8.531685         47.81492
+trstprt  9.728802 -0.9936628 -0.2039233             9.215759         53.36000
+trstsci 10.327659  6.0703700  7.7172652            13.216328         78.30219</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -202,6 +213,17 @@ trstsci 10.889451  6.5776284  9.1361204            14.531124         78.80845</c
 <p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-3-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Random Forest Confusion Matrix for Eastern Europe ===
+           region.ytest
+region.pred High  Low Medium
+     High   1832  142    222
+     Low       6    1      0
+     Medium    8    0      6
+
+Random Forest Accuracy for Eastern Europe: 82.95%</code></pre>
 </div>
 </div>
 <p>[analysis]</p>
@@ -257,16 +279,16 @@ Pruned Tree for Southern Europe :</code></pre>
 </div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>SOuthern Europe Random Forest Variable Importance            High        Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
-ppltrst 22.24582 -3.2875894  2.5352474             21.29192         156.1478
-pplhlp  17.36293 -0.6494461 -3.7267072             15.88306         159.8679
-pplfair 18.78373  2.4974282  2.1120097             19.00667         150.6969
-trstprl 23.28586 -4.6447442 -0.3657281             22.85148         137.1359
-trstlgl 30.99441 -4.4441900  0.3752378             30.00829         140.2275
-trstplc 31.50324  3.2309465 -4.0572027             30.50261         153.8932
-trstplt 37.15071 -8.2325529 -3.9452577             35.90233         116.5866
-trstprt 30.50609 -1.5355346 -0.1263856             30.32206         120.2277
-trstsci 30.35444 13.5156505 10.0435928             33.39164         160.8961</code></pre>
+<pre><code>SOuthern Europe Random Forest Variable Importance            High         Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
+ppltrst 19.91498  -3.9706170  0.3570863             18.79624         157.1929
+pplhlp  14.81778   0.8121901 -3.6022937             13.57601         161.1389
+pplfair 19.44356   2.9256054  0.8353347             19.62534         150.7077
+trstprl 23.38001  -8.2799206  0.1783372             22.05468         137.9562
+trstlgl 32.60438  -6.9798506  0.2757977             31.74744         141.1023
+trstplc 32.35363   0.4218030 -4.6703752             30.93344         153.6530
+trstplt 36.38325 -10.5743564 -7.4681223             34.36867         115.5692
+trstprt 30.16652  -1.7806010 -1.9950345             29.58330         118.6661
+trstsci 27.16124  11.5038726  8.1239252             29.96972         160.6446</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -274,6 +296,17 @@ trstsci 30.35444 13.5156505 10.0435928             33.39164         160.8961</co
 <p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-4-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Random Forest Confusion Matrix for SOuthern Europe ===
+           region.ytest
+region.pred High  Low Medium
+     High   5189  266    517
+     Low       4    2      3
+     Medium   10    0      6
+
+Random Forest Accuracy for SOuthern Europe: 86.66%</code></pre>
 </div>
 </div>
 <p>[analysis]</p>
@@ -330,15 +363,15 @@ Pruned Tree for West-Central Europe :</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>West-Central Europe Random Forest Variable Importance             High        Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
-ppltrst  4.906544  3.6050131  1.7816672             5.620867         45.09680
-pplhlp   5.513005  2.2076716 -3.3233092             4.423856         47.24875
-pplfair 11.622698  5.9110053 -0.2936381            11.851505         43.68249
-trstprl  7.757958  5.0224087  7.2562385             9.763642         38.70897
-trstlgl 12.167167  0.8873016 -3.2060532            11.502534         40.91646
-trstplc  4.351688  5.2730895 -0.8249172             4.552433         44.45889
-trstplt 22.674996 -2.4703208 -3.4112115            21.288384         34.97446
-trstprt 12.721607  2.0833919 -0.4089200            12.525705         33.58041
-trstsci 10.397237  4.4681492 11.8820854            13.960416         53.06219</code></pre>
+ppltrst  5.612053  5.4603625  3.5114914             7.036351         45.30136
+pplhlp   5.760221  1.5774690 -0.5472433             5.446430         46.74159
+pplfair  9.549650  5.3576575 -0.1356192             9.897588         44.05564
+trstprl  7.497466  4.8303370  5.7233296             9.261624         39.27118
+trstlgl 12.542193  0.6952751 -1.7849647            12.079332         40.77122
+trstplc  4.499818  5.8791329 -2.7241888             4.201775         44.74001
+trstplt 20.241848 -1.2220855 -2.4575730            19.523271         35.98083
+trstprt 14.165498  0.8860432 -2.9298023            13.613898         33.32254
+trstsci 10.884857  5.8002170 10.9383707            14.626807         51.77161</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -346,6 +379,17 @@ trstsci 10.397237  4.4681492 11.8820854            13.960416         53.06219</c
 <p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-5-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Random Forest Confusion Matrix for West-Central Europe ===
+           region.ytest
+region.pred High  Low Medium
+     High   1932   54    161
+     Low       1    0      0
+     Medium    1    1      0
+
+Random Forest Accuracy for West-Central Europe: 89.86%</code></pre>
 </div>
 </div>
 <p>[analysis]</p>
@@ -401,16 +445,16 @@ Pruned Tree for Nordics :</code></pre>
 </div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Nordics Random Forest Variable Importance              High         Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
-ppltrst  1.7915197  1.86396272  1.7275736           2.31097926         24.50909
-pplhlp  -6.2573462  5.72457375  4.2523283          -4.73252344         23.02416
-pplfair -1.3875341  4.49955756  3.0942600          -0.34215893         24.00094
-trstprl  7.7018525  4.04106645  6.5640275           8.98142646         22.04638
-trstlgl  0.1016587  1.59710957 -0.9639846           0.07418447         22.12454
-trstplc  4.0679601  0.87717414  0.9329468           4.25547616         26.12784
-trstplt 12.6671366 -0.01257327 -1.9772895          12.43998283         17.47377
-trstprt 16.3314891  2.93592986  2.4639428          16.82323401         20.07180
-trstsci -9.1980740  3.23909469  4.9000959          -7.71816330         25.52274</code></pre>
+<pre><code>Nordics Random Forest Variable Importance             High       Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
+ppltrst  3.240077 2.7120851  1.4865808            3.7215797         24.65909
+pplhlp  -6.518629 3.9660710  3.0160382           -5.3113033         22.93274
+pplfair -2.816596 7.4823268  2.2766477           -1.5759723         24.29493
+trstprl  5.632028 4.3231877  7.0196772            6.9788510         22.36639
+trstlgl -1.049458 4.9245335 -1.6041565           -0.8718425         22.57334
+trstplc  2.270554 1.3535989 -0.4542979            2.3408926         26.33579
+trstplt 10.946982 0.6980968  0.5694000           11.0066772         17.53896
+trstprt 15.102498 3.1661302  2.7544016           15.6350497         19.47518
+trstsci -7.689876 3.1325185  3.0476365           -6.4836201         25.63892</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -418,6 +462,17 @@ trstsci -9.1980740  3.23909469  4.9000959          -7.71816330         25.52274<
 <p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-6-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Random Forest Confusion Matrix for Nordics ===
+           region.ytest
+region.pred High  Low Medium
+     High   2879   28     78
+     Low       0    0      0
+     Medium    3    0      0
+
+Random Forest Accuracy for Nordics: 96.35%</code></pre>
 </div>
 </div>
 <p>[analysis]</p>
@@ -473,16 +528,16 @@ Pruned Tree for United Kingdom :</code></pre>
 </div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>United Kingdom Random Forest Variable Importance             High        Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
-ppltrst  5.259605  2.4520811 -3.9259039             4.345360         32.29426
-pplhlp  10.382465 -2.0391428 -1.5957698             9.254325         31.98007
-pplfair  9.744407 -1.6947394  2.6303583             9.828653         29.58750
-trstprl  8.037112  0.7345263 -2.6737864             7.198038         33.76075
-trstlgl  4.533143 -0.3317606 -3.2705426             3.438005         32.67346
-trstplc  5.477998  2.2894095 -0.1866881             5.545713         35.41817
-trstplt  9.110599 -1.0535141 -0.6559330             8.950974         26.85251
-trstprt 11.896245 -0.4366106 -2.8463314            10.944476         25.92292
-trstsci  8.352923  5.7619104  0.6253982             8.924867         35.75002</code></pre>
+<pre><code>United Kingdom Random Forest Variable Importance            High         Low      Medium MeanDecreaseAccuracy MeanDecreaseGini
+ppltrst 5.677030  2.68983596 -2.54456911             5.026167         32.16040
+pplhlp  6.843082 -0.34196419 -1.23344635             6.311252         32.26730
+pplfair 6.444983 -1.89040706  3.04095991             6.772452         30.33347
+trstprl 8.045312  0.80500827 -4.24956588             6.707437         33.00717
+trstlgl 4.623828  1.48484595 -0.92481703             4.374643         32.43848
+trstplc 7.374487  1.43148172 -0.05557574             7.359372         35.84967
+trstplt 9.232850  1.19125592  0.80856898             9.294963         26.41178
+trstprt 9.879684  0.01084002 -2.34836914             9.107360         27.15227
+trstsci 7.080909  8.20877990  0.53995755             8.137049         35.93605</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -490,6 +545,17 @@ trstsci  8.352923  5.7619104  0.6253982             8.924867         35.75002</c
 <p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-7-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Random Forest Confusion Matrix for United Kingdom ===
+           region.ytest
+region.pred High  Low Medium
+     High   1184   46    105
+     Low       0    0      0
+     Medium    0    0      1
+
+Random Forest Accuracy for United Kingdom: 88.70%</code></pre>
 </div>
 </div>
 <p>[analysis]</p>

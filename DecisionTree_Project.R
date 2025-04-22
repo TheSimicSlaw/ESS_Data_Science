@@ -115,7 +115,7 @@ decision_tree_model(west_central_2, "Western Central Europe")
 random_forest_model <- function(region_data, region_name) {
   set.seed(1)
   forest.train = sample(1:nrow(region_data), nrow(region_data)/2)
-  region.xtest = region_data[-forest.train, c(2:10)]
+  region.xtest = region_data[-forest.train, c(2:11)]
   region.ytest = region_data[-forest.train, 12]
   region.forest = randomForest(dem_imp ~ ppltrst + pplhlp + pplfair + trstprl +
                                  trstlgl + trstplc + trstplt + trstprt + trstsci, 
