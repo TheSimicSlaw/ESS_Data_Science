@@ -279,7 +279,7 @@ southern.tree <- decision_tree_model(southern.data_split$train, southern.data_sp
 
 southern.pruned_tree <- get_prune_chart(southern.tree, southern.data_split$train, southern.data_split$test, "Southern Europe")
 
-southern.random_forest <- random_forest_model(southern_2, "SOuthern Europe")
+southern.random_forest <- random_forest_model(southern_2, "Southern Europe")
 ```
 
 \[analysis\]
