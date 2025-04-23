@@ -4,7 +4,7 @@ format: html
 editor: visual
 ---
 
-```{r setup, include=FALSE} 
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 ```
 
@@ -219,12 +219,17 @@ run_rfe_and_tree_combined_plot <- function(region_df, region_name, output_dir = 
 # Pre-Plotting Processing
 # ================================
 
+setwd("..") #moving down to non-parametric
+setwd("..")
+
 central <- read.csv("central_europe_clean_csv.csv")
 eastern <- read.csv("eastern_europe_clean_csv.csv")
 nordics <- read.csv("nordics_clean_csv.csv")
 southern <- read.csv("southern_europe_clean_csv.csv")
 uk <- read.csv("uk_clean_csv.csv")
 west_central <- read.csv("wce_clean_csv.csv")
+
+setwd("./experimental_models/DecisionTrees") #moving back up
 
 central_2 <- categorize_democracy(factoring(central))
 eastern_2 <- categorize_democracy(factoring(eastern))
