@@ -100,54 +100,127 @@ decision_tree_model <- function(data, region_name = "Region", split_ratio = 0.7)
   plot(tree_model)
   text(tree_model, pretty = 0)
   
-  return(invisible(list(confusion_matrix = conf_matrix, accuracy = accuracy)))
+  return(list(tree_model = tree_model, test_data = test_data, train_data = train_data))
+
 }
 
+# Prune and evaluate function
+prune_and_evaluate <- function(train_data, test_data, region_name = "Region") {
+  
+  tree_model <- tree(dem_imp ~ ppltrst + pplhlp + pplfair + trstprl + trstlgl +
+                       trstplc + trstplt + trstprt + trstsci, data = train_data)
+  
+  cv_result <- cv.tree(tree_model, FUN = prune.misclass)
+  
+  plot(cv_result$size, cv_result$dev, type = "b",
+       main = paste("CV Tree Size vs Deviance -", region_name),
+       xlab = "Tree Size", ylab = "Deviance")
+  
+  best_size <- cv_result$size[which.min(cv_result$dev)]
+  pruned_tree <- prune.misclass(tree_model, best = best_size)
+  
+  predictions <- predict(pruned_tree, test_data, type = "class")
+  conf_matrix <- table(Predicted = predictions, Actual = test_data$dem_imp)
+  accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
+  
+  cat("\n=== Pruned Confusion Matrix for", region_name, "===\n")
+  print(conf_matrix)
+  cat(sprintf("\nPruned Accuracy for %s: %.2f%%\n", region_name, accuracy * 100))
+  
+  cat("\n=== Pruned Decision Tree for", region_name, "===\n")
+  plot(pruned_tree)
+  text(pruned_tree, pretty = 0)
+  title(main = paste("Pruned Decision Tree -", region_name))  # <-- Add title
+  
+  return(invisible(list(
+    pruned_tree = pruned_tree,
+    confusion_matrix = conf_matrix,
+    accuracy = accuracy
+  )))
+}
 
 # ------- manual --------
-# 70/30 split
-decision_tree_model(central_2, "Central Europe", split_ratio = 0.7)
 
-# 80/20 split
-decision_tree_model(central_2, "Central Europe", split_ratio = 0.8)
+# Central Europe
+cat("\n### Central Europe (70/30) ###\n")
+ce_tree_output <- decision_tree_model(central_2, "Central Europe", split_ratio = 0.7)
+train_data <- ce_tree_output$train_data
+test_data <- ce_tree_output$test_data
+prune_and_evaluate(train_data, test_data, "Central Europe (70/30)")
 
-
-decision_tree_model(central_2, "Eastern Europe", split_ratio = 0.7)
-
-
-# -----------------------
-
-# these are for 70 30 split 
-region_list <- list(
-  "Central Europe" = central_2,
-  "Eastern Europe" = eastern_2,
-  "Nordics" = nordics_2,
-  "Southern Europe" = southern_2,
-  "UK" = uk_2,
-  "Western Central Europe" = west_central_2
-)
-
-# Then apply the function for each region:
-for (region_name in names(region_list)) {
-  decision_tree_model(region_list[[region_name]], region_name, split_ratio = 0.7)
-}
-
-# -----------------------
-
-# these are for 80 20 split 
-region_list <- list(
-  "Central Europe" = central_2,
-  "Eastern Europe" = eastern_2,
-  "Nordics" = nordics_2,
-  "Southern Europe" = southern_2,
-  "UK" = uk_2,
-  "Western Central Europe" = west_central_2
-)
-
-# Then apply the function for each region:
-for (region_name in names(region_list)) {
-  decision_tree_model(region_list[[region_name]], region_name, split_ratio = 0.8)
-}
+cat("\n### Central Europe (80/20) ###\n")
+ce_tree_output <- decision_tree_model(central_2, "Central Europe", split_ratio = 0.8)
+train_data <- ce_tree_output$train_data
+test_data <- ce_tree_output$test_data
+prune_and_evaluate(train_data, test_data, "Central Europe (80/20)")
 
 
+# === Eastern Europe ===
+cat("\n### Eastern Europe (70/30) ###\n")
+ee_tree_output <- decision_tree_model(eastern_2, "Eastern Europe", split_ratio = 0.7)
+train_data <- ee_tree_output$train_data
+test_data <- ee_tree_output$test_data
+prune_and_evaluate(train_data, test_data, "Eastern Europe (70/30)")
+
+cat("\n### Eastern Europe (80/20) ###\n")
+ee_tree_output <- decision_tree_model(eastern_2, "Eastern Europe", split_ratio = 0.8)
+train_data <- ee_tree_output$train_data
+test_data <- ee_tree_output$test_data
+prune_and_evaluate(train_data, test_data, "Eastern Europe (80/20)")
+
+
+# === Nordics ===
+cat("\n### Nordics (70/30) ###\n")
+n_tree_output <- decision_tree_model(nordics_2, "Nordics", split_ratio = 0.7)
+train_data <- n_tree_output$train_data
+test_data <- n_tree_output$test_data
+prune_and_evaluate(train_data, test_data, "Nordics (70/30)")
+
+cat("\n### Nordics (80/20) ###\n")
+n_tree_output <- decision_tree_model(nordics_2, "Nordics", split_ratio = 0.8)
+train_data <- n_tree_output$train_data
+test_data <- n_tree_output$test_data
+prune_and_evaluate(train_data, test_data, "Nordics (80/20)")
+
+
+# === Southern Europe ===
+cat("\n### Southern Europe (70/30) ###\n")
+se_tree_output <- decision_tree_model(southern_2, "Southern Europe", split_ratio = 0.7)
+train_data <- se_tree_output$train_data
+test_data <- se_tree_output$test_data
+prune_and_evaluate(train_data, test_data, "Southern Europe (70/30)")
+
+cat("\n### Southern Europe (80/20) ###\n")
+se_tree_output <- decision_tree_model(southern_2, "Southern Europe", split_ratio = 0.8)
+train_data <- se_tree_output$train_data
+test_data <- se_tree_output$test_data
+prune_and_evaluate(train_data, test_data, "Southern Europe (80/20)")
+
+
+# === UK ===
+cat("\n### UK (70/30) ###\n")
+uk_tree_output <- decision_tree_model(uk_2, "UK", split_ratio = 0.7)
+train_data <- uk_tree_output$train_data
+test_data <- uk_tree_output$test_data
+prune_and_evaluate(train_data, test_data, "UK (70/30)")
+
+cat("\n### UK (80/20) ###\n")
+uk_tree_output <- decision_tree_model(uk_2, "UK", split_ratio = 0.8)
+train_data <- uk_tree_output$train_data
+test_data <- uk_tree_output$test_data
+prune_and_evaluate(train_data, test_data, "UK (80/20)")
+
+
+# === Western Central Europe ===
+cat("\n### Western Central Europe (70/30) ###\n")
+wce_tree_output <- decision_tree_model(west_central_2, "Western Central Europe", split_ratio = 0.7)
+train_data <- wce_tree_output$train_data
+test_data <- wce_tree_output$test_data
+prune_and_evaluate(train_data, test_data, "Western Central Europe (70/30)")
+
+cat("\n### Western Central Europe (80/20) ###\n")
+wce_tree_output <- decision_tree_model(west_central_2, "Western Central Europe", split_ratio = 0.8)
+train_data <- wce_tree_output$train_data
+test_data <- wce_tree_output$test_data
+prune_and_evaluate(train_data, test_data, "Western Central Europe (80/20)")
 
