@@ -1,6 +1,6 @@
 ---
 title: "Analyzing the Relationship Between Social Trust and the Importance of Democracy Using European Social Survey Data (2020)"
-authors: Group 20 - Emma ‘Ais’ Burniston, Ryan Camp, Jacqueline Sanchez, Tan Tran
+authors: Group 20 - Emma ‘Ais’ Burniston, Ryan Camp, Jacqueline Sanchez, Tan Tran, Samuel Mlinka
 mainfont: Palatino Linotype
 format: html
 ---
@@ -28,12 +28,12 @@ Linear Discriminant Analysis (LDA) is the parametric model best suited to classi
 The significance of variables was slightly different between the different regions. In Central Europe, Eastern Europe, the Nordics, and Southern Europe the most significant factor was “trst_sci”. However, in the UK the most significant variable was “trst_lgl”. And for Western Central Europe the most significant factor was “pplfair”.\
 K-fold cross validation was used to determine the accuracy of the model. \[K-fold R code here\]\
 Results of the K-fold :\
-Central Europe : \~89.24%  
-Eastern Europe : \~82.11%  
-Nordics : \~94.16%  
-Southern Europe : \~86.65%  
-UK : \~86.22%  
-Western Central Europe : \~87.67%  
+Central Europe : \~89.24%\
+Eastern Europe : \~82.11%\
+Nordics : \~94.16%\
+Southern Europe : \~86.65%\
+UK : \~86.22%\
+Western Central Europe : \~87.67%\
 The overall accuracy of the K-fold was \~87.68%.\
 \[feel free to rearrange and readjust as needed, just please don’t delete my stuff without asking\]
 
