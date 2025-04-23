@@ -19,9 +19,26 @@ Our analysis focused on 9 predictors of social trust: *ppltrst, pplhlp, pplfair,
 
 ### Linear Discriminant Analysis Model (Ais, Jacqueline, Samuel):
 
-Linear Discriminant Analysis (LDA) is the parametric model best suited to classification problems with more than two responses. As with any parametric method, it comes with assumptions. 1) The classes can be described using a multivariate normal distribution. 2) The classes share the same covariance matrix. 3) The observations are independent of each other. LDA’s benefits are in its simplicity and scalability, while LDA’s weaknesses lie in assumption 2 and its sensitivity to outliers/extreme values. \[any further details of LDA - Bayesian origins? - put discriminant formula here\] \[objective of using LDA\] \[R code for LDA model .lda\] \[confusion matrices (images/tables) and what they mean\] \[relative importance of variables, check using magnitude of discriminant scores. lda_model\$scaling\] The significance of variables was slightly different between the different regions. In Central Europe, Eastern Europe, the Nordics, and Southern Europe the most significant factor was “trst_sci”. However, in the UK the most significant variable was “trst_lgl”. And for Western Central Europe the most significant factor was “pplfair”. K-fold cross validation was used to determine the accuracy of the model. \[K-fold R code here\] Results of the K-fold : Central Europe : \~89.24% Eastern Europe : \~82.11% Nordics : \~94.16% Southern Europe : \~86.65% UK : \~86.22% Western Central Europe : \~87.67% The overall accuracy of the K-fold was \~87.68%. \[feel free to rearrange and readjust as needed, just please don’t delete my stuff without asking\]
+Linear Discriminant Analysis (LDA) is the parametric model best suited to classification problems with more than two responses. As with any parametric method, it comes with assumptions. 1) The classes can be described using a multivariate normal distribution. 2) The classes share the same covariance matrix. 3) The observations are independent of each other. LDA’s benefits are in its simplicity and scalability, while LDA’s weaknesses lie in assumption 2 and its sensitivity to outliers/extreme values.\
+\[any further details of LDA - Bayesian origins? - put discriminant formula here\]\
+\[objective of using LDA\]\
+\[R code for LDA model .lda\]\
+\[confusion matrices (images/tables) and what they mean\]\
+\[relative importance of variables, check using magnitude of discriminant scores. lda_model\$scaling\]\
+The significance of variables was slightly different between the different regions. In Central Europe, Eastern Europe, the Nordics, and Southern Europe the most significant factor was “trst_sci”. However, in the UK the most significant variable was “trst_lgl”. And for Western Central Europe the most significant factor was “pplfair”.\
+K-fold cross validation was used to determine the accuracy of the model. \[K-fold R code here\]\
+Results of the K-fold :\
+Central Europe :\
+\~89.24% Eastern Europe :\
+\~82.11% Nordics :\
+\~94.16% Southern Europe :\
+\~86.65% UK :\
+\~86.22% Western Central Europe :\
+\~87.67% The overall accuracy of the K-fold was \~87.68%.\
+\[feel free to rearrange and readjust as needed, just please don’t delete my stuff without asking\]
 
 ### Random Forest Model (Ryan, Tan):
+
 ```{r}
 #| echo: false
 
@@ -171,7 +188,6 @@ southern_2 <- categorize_democracy(factoring(southern))
 uk_2 <- categorize_democracy(factoring(uk))
 west_central_2 <- categorize_democracy(factoring(west_central))
 ```
-
 
 ### Central Europe
 
