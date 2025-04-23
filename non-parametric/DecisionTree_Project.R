@@ -5,14 +5,15 @@
 library(tree)
 library(caret)
 library(dplyr)
+library(randomForest)
 
 ## Load datasets 
-central <- central_europe_clean_csv
-eastern <- eastern_europe_clean_csv
-nordics <- nordics_clean_csv
-southern <- southern_europe_clean_csv
-uk <- uk_clean_csv
-west_central <- wce_clean_csv
+central <- read.csv("central_europe_clean_csv.csv")
+eastern <- read.csv("eastern_europe_clean_csv.csv")
+nordics <- read.csv("nordics_clean_csv.csv")
+southern <- read.csv("southern_europe_clean_csv.csv")
+uk <- read.csv("uk_clean_csv.csv")
+west_central <- read.csv("wce_clean_csv.csv")
 
 ## Making Copies for Analysis
 central_2 <- central
@@ -44,7 +45,7 @@ categorize_democracy <- function(df) {
   df$dem_imp <- ifelse(df$implvdm < 5, "Low",
                        ifelse(df$implvdm >= 7, "High", "Medium"))
   df$dem_imp <- as.factor(df$dem_imp)
-  df$implvdm <- NULL
+  #df$implvdm <- NULL
   return(df)
 }
 
@@ -59,8 +60,9 @@ west_central_2 <- categorize_democracy(west_central_2)
 decision_tree_model <- function(data, region_name = "Region") {
   set.seed(1)
   
-  data <- na.omit(data)
-  data$dem_imp <- as.factor(data$dem_imp)
+  # data set is already cleaned and we already factored dem_imp in categorize_democracy
+  #data <- na.omit(data)
+  #data$dem_imp <- as.factor(data$dem_imp)
   
   # Balance the dataset
   min_n <- min(table(data$dem_imp))
@@ -108,3 +110,26 @@ decision_tree_model(nordics_2, "Nordics")
 decision_tree_model(southern_2, "Southern Europe")
 decision_tree_model(uk_2, "UK")
 decision_tree_model(west_central_2, "Western Central Europe")
+
+
+random_forest_model <- function(region_data, region_name) {
+  set.seed(1)
+  forest.train = sample(1:nrow(region_data), nrow(region_data)/2)
+  region.xtest = region_data[-forest.train, c(2:10)]
+  region.ytest = region_data[-forest.train, 12]
+  region.forest = randomForest(dem_imp ~ ppltrst + pplhlp + pplfair + trstprl +
+                                 trstlgl + trstplc + trstplt + trstprt + trstsci, 
+                               xtest = region.xtest, ytest = region.ytest,  
+                               subset = forest.train, mtry = 3, keep.forest = TRUE, 
+                               data = region_data, importance = TRUE)
+  print(region_name)
+  print(importance(region.forest))
+  varImpPlot(region.forest, main = region_name)
+}
+
+random_forest_model(central_2, "Central Europe")
+random_forest_model(eastern_2, "Eastern Europe")
+random_forest_model(nordics_2, "Nordics")
+random_forest_model(southern_2, "Southern Europe")
+random_forest_model(uk_2, "UK")
+random_forest_model(west_central_2, "Western Central Europe")

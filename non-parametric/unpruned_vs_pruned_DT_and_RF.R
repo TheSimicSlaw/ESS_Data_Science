@@ -265,6 +265,3 @@ for (var in predictors) {
   
   print(p)
 }
-
-
-

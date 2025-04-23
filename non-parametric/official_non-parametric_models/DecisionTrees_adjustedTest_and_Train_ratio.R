@@ -7,12 +7,13 @@ library(caret)
 library(dplyr)
 
 ## Load datasets 
-central <- central_europe_clean_csv
-eastern <- eastern_europe_clean_csv
-nordics <- nordics_clean_csv
-southern <- southern_europe_clean_csv
-uk <- uk_clean_csv
-west_central <- wce_clean_csv
+# Load datasets
+central <- read.csv("~/Documents/Github/ESS_Data_Science/non-parametric/central_europe_clean_csv.csv")
+eastern <- read.csv("~/Documents/Github/ESS_Data_Science/non-parametric/eastern_europe_clean_csv.csv")
+nordics <- read.csv("~/Documents/Github/ESS_Data_Science/non-parametric/nordics_clean_csv.csv")
+southern <- read.csv("~/Documents/Github/ESS_Data_Science/non-parametric/southern_europe_clean_csv.csv")
+uk <- read.csv("~/Documents/Github/ESS_Data_Science/non-parametric/uk_clean_csv.csv")
+west_central <- read.csv("~/Documents/Github/ESS_Data_Science/non-parametric/wce_clean_csv.csv")
 
 ## Making Copies for Analysis
 central_2 <- central
@@ -56,7 +57,7 @@ uk_2 <- categorize_democracy(uk_2)
 west_central_2 <- categorize_democracy(west_central_2)
 
 # Decision Tree Function with Balanced Sampling, Cross-validation, and Pruning
-decision_tree_model <- function(data, region_name = "Region") {
+decision_tree_model <- function(data, region_name = "Region", split_ratio = 0.7) {
   set.seed(1)
   
   data <- na.omit(data)
@@ -69,8 +70,8 @@ decision_tree_model <- function(data, region_name = "Region") {
     slice_sample(n = min_n) %>%
     ungroup()
   
-  # Stratified train/test split
-  train_idx <- createDataPartition(data_bal$dem_imp, p = 0.7, list = FALSE)
+  # Custom train/test split
+  train_idx <- createDataPartition(data_bal$dem_imp, p = split_ratio, list = FALSE)
   train_data <- data_bal[train_idx, ]
   test_data <- data_bal[-train_idx, ]
   
@@ -83,7 +84,7 @@ decision_tree_model <- function(data, region_name = "Region") {
   predictions <- predict(tree_model, test_data, type = "class")
   conf_matrix <- table(Predicted = predictions, Actual = test_data$dem_imp)
   
-  # Calculate accuracy
+  # Accuracy
   correct <- sum(diag(conf_matrix))
   total <- sum(conf_matrix)
   accuracy <- correct / total
@@ -91,7 +92,8 @@ decision_tree_model <- function(data, region_name = "Region") {
   # Output
   cat("\n=== Confusion Matrix for", region_name, "===\n")
   print(conf_matrix)
-  cat(sprintf("\nAccuracy for %s: %.2f%%\n", region_name, accuracy * 100))
+  cat(sprintf("\nAccuracy for %s (%.0f/%.0f split): %.2f%%\n", 
+              region_name, split_ratio*100, (1-split_ratio)*100, accuracy * 100))
   
   # Plot the decision tree
   cat("\nDecision Tree for", region_name, ":\n")
@@ -101,10 +103,51 @@ decision_tree_model <- function(data, region_name = "Region") {
   return(invisible(list(confusion_matrix = conf_matrix, accuracy = accuracy)))
 }
 
-# Call the function for each regions
-decision_tree_model(central_2, "Central Europe")
-decision_tree_model(eastern_2, "Eastern Europe")
-decision_tree_model(nordics_2, "Nordics")
-decision_tree_model(southern_2, "Southern Europe")
-decision_tree_model(uk_2, "UK")
-decision_tree_model(west_central_2, "Western Central Europe")
+
+# ------- manual --------
+# 70/30 split
+decision_tree_model(central_2, "Central Europe", split_ratio = 0.7)
+
+# 80/20 split
+decision_tree_model(central_2, "Central Europe", split_ratio = 0.8)
+
+
+decision_tree_model(central_2, "Eastern Europe", split_ratio = 0.7)
+
+
+# -----------------------
+
+# these are for 70 30 split 
+region_list <- list(
+  "Central Europe" = central_2,
+  "Eastern Europe" = eastern_2,
+  "Nordics" = nordics_2,
+  "Southern Europe" = southern_2,
+  "UK" = uk_2,
+  "Western Central Europe" = west_central_2
+)
+
+# Then apply the function for each region:
+for (region_name in names(region_list)) {
+  decision_tree_model(region_list[[region_name]], region_name, split_ratio = 0.7)
+}
+
+# -----------------------
+
+# these are for 80 20 split 
+region_list <- list(
+  "Central Europe" = central_2,
+  "Eastern Europe" = eastern_2,
+  "Nordics" = nordics_2,
+  "Southern Europe" = southern_2,
+  "UK" = uk_2,
+  "Western Central Europe" = west_central_2
+)
+
+# Then apply the function for each region:
+for (region_name in names(region_list)) {
+  decision_tree_model(region_list[[region_name]], region_name, split_ratio = 0.8)
+}
+
+
+
