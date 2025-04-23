@@ -1,3 +1,4 @@
+#setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 #install.packages("tree")
 #install.packages("caret")
 #install.packages("rpart.plot")
@@ -56,14 +57,10 @@ southern_2 <- categorize_democracy(southern_2)
 uk_2 <- categorize_democracy(uk_2)
 west_central_2 <- categorize_democracy(west_central_2)
 
-# Decision Tree Function with Balanced Sampling, Cross-validation, and Pruning
-decision_tree_model <- function(data, region_name = "Region") {
+# Decision Tree Function with Balanced Sampling
+decision_tree_model <- function(data, region_name = "Region", split_ratio = 0.7) {
   set.seed(1)
-  
-  # data set is already cleaned and we already factored dem_imp in categorize_democracy
-  #data <- na.omit(data)
-  #data$dem_imp <- as.factor(data$dem_imp)
-  
+
   # Balance the dataset
   min_n <- min(table(data$dem_imp))
   data_bal <- data %>%
@@ -71,8 +68,8 @@ decision_tree_model <- function(data, region_name = "Region") {
     slice_sample(n = min_n) %>%
     ungroup()
   
-  # Stratified train/test split
-  train_idx <- createDataPartition(data_bal$dem_imp, p = 0.7, list = FALSE)
+  # Stratified train/test split 
+  train_idx <- createDataPartition(data_bal$dem_imp, p = split_ratio, list = FALSE)
   train_data <- data_bal[train_idx, ]
   test_data <- data_bal[-train_idx, ]
   
@@ -81,35 +78,43 @@ decision_tree_model <- function(data, region_name = "Region") {
                        trstplc + trstplt + trstprt + trstsci,
                      data = train_data)
   
-  # Predict and evaluate
+  # Predict on test set
   predictions <- predict(tree_model, test_data, type = "class")
   conf_matrix <- table(Predicted = predictions, Actual = test_data$dem_imp)
   
   # Calculate accuracy
-  correct <- sum(diag(conf_matrix))
-  total <- sum(conf_matrix)
-  accuracy <- correct / total
+  accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
   
   # Output
-  cat("\n=== Confusion Matrix for", region_name, "===\n")
+  cat("\n===", region_name, "===\n")
+  cat("Balanced Sample Size:", nrow(data_bal), "| Train:", nrow(train_data), "| Test:", nrow(test_data), "\n")
   print(conf_matrix)
-  cat(sprintf("\nAccuracy for %s: %.2f%%\n", region_name, accuracy * 100))
+  cat(sprintf("Accuracy: %.2f%%\n", accuracy * 100))
   
-  # Plot the decision tree
-  cat("\nDecision Tree for", region_name, ":\n")
+  # Plot tree
   plot(tree_model)
   text(tree_model, pretty = 0)
   
   return(invisible(list(confusion_matrix = conf_matrix, accuracy = accuracy)))
 }
 
-# Call the function for each regions
-decision_tree_model(central_2, "Central Europe")
-decision_tree_model(eastern_2, "Eastern Europe")
-decision_tree_model(nordics_2, "Nordics")
-decision_tree_model(southern_2, "Southern Europe")
-decision_tree_model(uk_2, "UK")
-decision_tree_model(west_central_2, "Western Central Europe")
+
+# 70/30 Splits
+decision_tree_model(central_2, "Central Europe (70/30)", split_ratio = 0.7)
+decision_tree_model(eastern_2, "Eastern Europe (70/30)", split_ratio = 0.7)
+decision_tree_model(nordics_2, "Nordics (70/30)", split_ratio = 0.7)
+decision_tree_model(southern_2, "Southern Europe (70/30)", split_ratio = 0.7)
+decision_tree_model(uk_2, "UK (70/30)", split_ratio = 0.7)
+decision_tree_model(west_central_2, "Western Central Europe (70/30)", split_ratio = 0.7)
+
+# 80/20 Split
+decision_tree_model(central_2, "Central Europe (80/20)", split_ratio = 0.8)
+decision_tree_model(eastern_2, "Eastern Europe (80/20)", split_ratio = 0.8)
+decision_tree_model(nordics_2, "Nordics (80/20)", split_ratio = 0.8)
+decision_tree_model(southern_2, "Southern Europe (80/20)", split_ratio = 0.8)
+decision_tree_model(uk_2, "UK (80/20)", split_ratio = 0.8)
+decision_tree_model(west_central_2, "Western Central Europe (80/20)", split_ratio = 0.8)
+
 
 
 random_forest_model <- function(region_data, region_name) {
