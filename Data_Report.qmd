@@ -1,0 +1,266 @@
+---
+title: "Analyzing the Relationship Between Social Trust and the Importance of Democracy Using European Social Survey Data (2020)"
+authors: Group 20 - Emma ‘Ais’ Burniston, Ryan Camp, Jacqueline Sanchez, Tan Tran
+mainfont: Palatino Linotype
+format: html
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
+
+### Introduction (Ais):
+
+In the past decade, there has been a great deal of changes within the political realm across the world, namely pushes towards governments that are more right-wing and authoritarian in nature. The causes of this shift are of course, multi-faceted, and express themselves differently across the world. In Turkey, there is a notable ethnonationalist element, concurrent with the country’s origins as a modern state (Kushner 1997). For Brazil, indigenous communities and their sovereign rights come into conflict with the economic deprivation of non-indigenous citizens, leading to distinct anti-Indian rhetoric in their far-right politics. (Conner 1995) In El Salvador, rusted-shut political machines and de-facto gang control produced such frustration among voters that they resorted to mass incarceration at an unprecedented scale. (Kelly et al., 2025) However the sense of lacking inertia is one of the more ubiquitous motivators of the rightward movement worldwide, and especially in Europe. Doing a numeric analysis on lack of interest is somewhat difficult, therefore we must consider what the inverse would be, that is trust in social institutions and human nature. Fortunately, the European Social Survey (ESS) Round 10, conducted in 2020, has an entire module based around this subject, and is available for our analytical use.
+
+For the purposes of our project, we will be looking at the relationship between measures of social trust and the importance of democracy in six regions of Europe: Western Continental Europe, Central Europe, Southern Europe, Eastern Europe, the Nordics and the British Isles. We have used data from ESS 10, conducted by the Core Scientific Team (CST) based in the University of London. Our objective is to discover if there is a meaningful/significant relationship between these predictors and the importance of democracy using linear discriminant analysis and decision trees. Comparisons between these regions using multiple approaches may provide insight into the continental differences in political thought.
+
+Our analysis focused on 9 predictors of social trust: *ppltrst, pplhlp, pplfair, trstprl, trstplt, trstlgl, trstplc, trstprt,* and *trstsci,* and the response variable implvdm - importance of democracy for \[country\]. All were measured on a 11-step Likert scale (0-10), but the response variable was partitioned into categories of Low, Medium or High, as their relative properties are of more interest than predicting the exact numeric response. The data was cleaned and preprocessed split into training and testing sets, then linear discriminant analysis and decision tree models were used to identify relationships with reported importance of democracy. We evaluated the performance of each model and discussed their relative strengths and limitations. Comparing LDA and decision trees will hopefully allow a more complete understanding of democracy’s relative worth within Europe.
+
+### Linear Discriminant Analysis Model (Ais, Jacqueline, Samuel):
+
+Linear Discriminant Analysis (LDA) is the parametric model best suited to classification problems with more than two responses. As with any parametric method, it comes with assumptions. 1) The classes can be described using a multivariate normal distribution. 2) The classes share the same covariance matrix. 3) The observations are independent of each other. LDA’s benefits are in its simplicity and scalability, while LDA’s weaknesses lie in assumption 2 and its sensitivity to outliers/extreme values. \[any further details of LDA - Bayesian origins? - put discriminant formula here\] \[objective of using LDA\] \[R code for LDA model .lda\] \[confusion matrices (images/tables) and what they mean\] \[relative importance of variables, check using magnitude of discriminant scores. lda_model\$scaling\] The significance of variables was slightly different between the different regions. In Central Europe, Eastern Europe, the Nordics, and Southern Europe the most significant factor was “trst_sci”. However, in the UK the most significant variable was “trst_lgl”. And for Western Central Europe the most significant factor was “pplfair”. K-fold cross validation was used to determine the accuracy of the model. \[K-fold R code here\] Results of the K-fold : Central Europe : \~89.24% Eastern Europe : \~82.11% Nordics : \~94.16% Southern Europe : \~86.65% UK : \~86.22% Western Central Europe : \~87.67% The overall accuracy of the K-fold was \~87.68%. \[feel free to rearrange and readjust as needed, just please don’t delete my stuff without asking\]
+
+### Random Forest Model (Ryan, Tan):
+```{r}
+#| echo: false
+
+# ================================
+# Libraries
+# ================================
+
+library(tree)
+library(caret)
+library(dplyr)
+library(randomForest)
+library(doParallel)
+
+
+# ================================
+# Functions
+# ================================
+
+factoring <- function(df) {
+  vars <- c("pplfair", "pplhlp", "ppltrst", "trstprl", "trstlgl", "trstplc", 
+            "trstplt", "trstprt", "trstsci")
+  for (v in vars) {
+    df[[v]] <- as.factor(df[[v]])
+  }
+  return(df)
+}
+
+categorize_democracy <- function(df) {
+  df$dem_imp <- ifelse(df$implvdm < 5, "Low",
+                       ifelse(df$implvdm >= 7, "High", "Medium"))
+  df$dem_imp <- as.factor(df$dem_imp)
+  #df$implvdm <- NULL
+  return(df)
+}
+
+prepare_data_split <- function(data, split_ratio = 0.7, seed = 1) {
+  set.seed(seed)
+  min_n <- min(table(data$dem_imp))
+  data_bal <- data %>%
+    group_by(dem_imp) %>%
+    slice_sample(n = min_n) %>%
+    ungroup()
+  idx <- createDataPartition(data_bal$dem_imp, p = split_ratio, list = FALSE)
+  train_data <- data_bal[idx, ]
+  test_data <- data_bal[-idx, ]
+  return(list(train = train_data, test = test_data))
+}
+
+decision_tree_model <- function(train_data, test_data, region_name = "Region") {
+  tree_model <- tree(dem_imp ~ ppltrst + pplhlp + pplfair + trstprl + trstlgl +
+                       trstplc + trstplt + trstprt + trstsci,
+                     data = train_data)
+  
+  predictions <- predict(tree_model, test_data, type = "class")
+  conf_matrix <- table(Predicted = predictions, Actual = test_data$dem_imp)
+  accuracy <- mean(predictions == test_data$dem_imp)
+  
+  cat("\n=== Confusion Matrix for", region_name, "===\n")
+  print(conf_matrix)
+  cat(sprintf("\nAccuracy for %s: %.2f%%\n", region_name, accuracy * 100))
+  
+  cat("\nDecision Tree for", region_name, ":\n")
+  plot(tree_model)
+  text(tree_model, pretty = 0)
+  
+  return(tree_model)
+}
+
+get_prune_chart <- function(tree_model, train_data_input, test_data, region_name = "Region") {
+  assign("train_data", train_data_input, envir = .GlobalEnv)
+  prune_results <- cv.tree(tree_model, FUN = prune.misclass)
+  rm(train_data, envir = .GlobalEnv)
+  
+  par(mfrow = c(1, 2))
+  plot(prune_results$size, prune_results$dev, type = "b", main = "Tree Size vs Deviance")
+  plot(prune_results$k, prune_results$dev, type = "b", main = "Complexity Param vs Deviance")
+  
+  best_size <- prune_results$size[which.min(prune_results$dev)]
+  pruned_tree <- prune.misclass(tree_model, best = best_size)
+  
+  pruned_preds <- predict(pruned_tree, test_data, type = "class")
+  conf_matrix <- table(Predicted = pruned_preds, Actual = test_data$dem_imp)
+  accuracy <- mean(pruned_preds == test_data$dem_imp)
+  
+  cat("\n=== PRUNED Confusion Matrix for", region_name, "===\n")
+  print(conf_matrix)
+  cat(sprintf("\nPruned Accuracy for %s: %.2f%%\n", region_name, accuracy * 100))
+  cat("\nPruned Tree for", region_name, ":\n")
+  plot(pruned_tree)
+  text(pruned_tree, pretty = 0)
+  
+  return(pruned_tree)
+}
+
+run_pipeline <- function(region_data, region_name) {
+  split <- prepare_data_split(region_data)
+  tree <- decision_tree_model(split$train, split$test, region_name)
+  pruned <- get_prune_chart(tree, split$train, split$test, region_name)
+  return(list(tree = tree, pruned = pruned))
+}
+
+random_forest_model <- function(region_data, region_name) {
+  set.seed(1)
+  forest.train = sample(1:nrow(region_data), nrow(region_data)/2)
+  region.xtest = region_data[-forest.train, c(2:4, 6:11)]
+  region.ytest = region_data[-forest.train, 12]
+  region.forest = randomForest(dem_imp ~ ppltrst + pplhlp + pplfair + trstprl +
+                                 trstlgl + trstplc + trstplt + trstprt +
+                                 trstsci, xtest = region.xtest, 
+                               ytest = region.ytest, subset = forest.train, 
+                               mtry = 3, keep.forest = TRUE, 
+                               data = region_data, importance = TRUE)
+  cat(region_name, "Random Forest Variable Importance")
+  print(importance(region.forest))
+  varImpPlot(region.forest, main = region_name)
+  
+  region.pred <- predict(region.forest, region_data[-forest.train,])
+  conf_mat <- table(region.pred, region.ytest)
+  conf_acc <- (conf_mat[1,1] + conf_mat[2,2] + conf_mat[3,3])/sum(conf_mat)
+  cat("\n=== Random Forest Confusion Matrix for", region_name, "===\n")
+  print(conf_mat)
+  cat(sprintf("\nRandom Forest Accuracy for %s: %.2f%%\n", region_name, conf_acc*100))
+  
+  return(region.forest)
+}
+
+
+# ================================
+# Pre-Plotting Processing
+# ================================
+
+setwd("./non-parametric")
+
+central <- read.csv("central_europe_clean_csv.csv")
+eastern <- read.csv("eastern_europe_clean_csv.csv")
+nordics <- read.csv("nordics_clean_csv.csv")
+southern <- read.csv("southern_europe_clean_csv.csv")
+uk <- read.csv("uk_clean_csv.csv")
+west_central <- read.csv("wce_clean_csv.csv")
+
+setwd("./experimental_models/DecisionTrees")
+
+central_2 <- categorize_democracy(factoring(central))
+eastern_2 <- categorize_democracy(factoring(eastern))
+nordics_2 <- categorize_democracy(factoring(nordics))
+southern_2 <- categorize_democracy(factoring(southern))
+uk_2 <- categorize_democracy(factoring(uk))
+west_central_2 <- categorize_democracy(factoring(west_central))
+```
+
+
+### Central Europe
+
+```{r}
+#| echo: false
+central.data_split <- prepare_data_split(central_2)
+
+central.tree <- decision_tree_model(central.data_split$train, central.data_split$test, "Central Europe")
+
+central.pruned_tree <- get_prune_chart(central.tree, central.data_split$train, central.data_split$test, "Central Europe")
+
+central.random_forest <- random_forest_model(central_2, "Central Europe")
+```
+
+\[analysis\]
+
+### Eastern Europe
+
+```{r}
+#| echo: false
+eastern.data_split <- prepare_data_split(eastern_2)
+
+eastern.tree <- decision_tree_model(eastern.data_split$train, eastern.data_split$test, "Eastern Europe")
+
+eastern.pruned_tree <- get_prune_chart(eastern.tree, eastern.data_split$train, eastern.data_split$test, "Eastern Europe")
+
+eastern.random_forest <- random_forest_model(eastern_2, "Eastern Europe")
+```
+
+\[analysis\]
+
+### Southern Europe
+
+```{r}
+#| echo: false
+southern.data_split <- prepare_data_split(southern_2)
+
+southern.tree <- decision_tree_model(southern.data_split$train, southern.data_split$test, "Southern Europe")
+
+southern.pruned_tree <- get_prune_chart(southern.tree, southern.data_split$train, southern.data_split$test, "Southern Europe")
+
+southern.random_forest <- random_forest_model(southern_2, "Southern Europe")
+```
+
+\[analysis\]
+
+### West-Central Europe
+
+```{r}
+#| echo: false
+west_central.data_split <- prepare_data_split(west_central_2)
+
+west_central.tree <- decision_tree_model(west_central.data_split$train, west_central.data_split$test, "West-Central Europe")
+
+west_central.pruned_tree <- get_prune_chart(west_central.tree, west_central.data_split$train, west_central.data_split$test, "West-Central Europe")
+
+west_central.random_forest <- random_forest_model(west_central_2, "West-Central Europe")
+```
+
+\[analysis\]
+
+### Nordics
+
+```{r}
+#| echo: false
+nordics.data_split <- prepare_data_split(nordics_2)
+
+nordics.tree <- decision_tree_model(nordics.data_split$train, nordics.data_split$test, "Nordics")
+
+nordics.pruned_tree <- get_prune_chart(nordics.tree, nordics.data_split$train, nordics.data_split$test, "Nordics")
+
+nordics.random_forest <- random_forest_model(nordics_2, "Nordics")
+```
+
+\[analysis\]
+
+### United Kingdom
+
+```{r}
+#| echo: false
+uk.data_split <- prepare_data_split(uk_2)
+
+uk.tree <- decision_tree_model(uk.data_split$train, uk.data_split$test, "United Kingdom")
+
+uk.pruned_tree <- get_prune_chart(uk.tree, uk.data_split$train, uk.data_split$test, "United Kingdom")
+
+uk.random_forest <- random_forest_model(uk_2, "United Kingdom")
+```
+
+\[analysis\]
+
+------------------------------------------------------------------------

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>DecisionTreePlots</title>
+<title>Analyzing the Relationship Between Social Trust and the Importance of Democracy Using European Social Survey Data (2020)</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -23,16 +23,16 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="DecisionTreesPlots_files/libs/clipboard/clipboard.min.js"></script>
-<script src="DecisionTreesPlots_files/libs/quarto-html/quarto.js"></script>
-<script src="DecisionTreesPlots_files/libs/quarto-html/popper.min.js"></script>
-<script src="DecisionTreesPlots_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="DecisionTreesPlots_files/libs/quarto-html/anchor.min.js"></script>
-<link href="DecisionTreesPlots_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="DecisionTreesPlots_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="DecisionTreesPlots_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="DecisionTreesPlots_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="DecisionTreesPlots_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="Data_Report_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Data_Report_files/libs/quarto-html/quarto.js"></script>
+<script src="Data_Report_files/libs/quarto-html/popper.min.js"></script>
+<script src="Data_Report_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Data_Report_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Data_Report_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Data_Report_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Data_Report_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Data_Report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Data_Report_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -45,13 +45,19 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">DecisionTreePlots</h1>
+<h1 class="title">Analyzing the Relationship Between Social Trust and the Importance of Democracy Using European Social Survey Data (2020)</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Group 20 - Emma ‘Ais’ Burniston, Ryan Camp, Jacqueline Sanchez, Tan Tran </p>
+          </div>
+  </div>
     
   
     
@@ -62,6 +68,19 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<section id="introduction-ais" class="level3">
+<h3 class="anchored" data-anchor-id="introduction-ais">Introduction (Ais):</h3>
+<p>In the past decade, there has been a great deal of changes within the political realm across the world, namely pushes towards governments that are more right-wing and authoritarian in nature. The causes of this shift are of course, multi-faceted, and express themselves differently across the world. In Turkey, there is a notable ethnonationalist element, concurrent with the country’s origins as a modern state (Kushner 1997). For Brazil, indigenous communities and their sovereign rights come into conflict with the economic deprivation of non-indigenous citizens, leading to distinct anti-Indian rhetoric in their far-right politics. (Conner 1995) In El Salvador, rusted-shut political machines and de-facto gang control produced such frustration among voters that they resorted to mass incarceration at an unprecedented scale. (Kelly et al., 2025) However the sense of lacking inertia is one of the more ubiquitous motivators of the rightward movement worldwide, and especially in Europe. Doing a numeric analysis on lack of interest is somewhat difficult, therefore we must consider what the inverse would be, that is trust in social institutions and human nature. Fortunately, the European Social Survey (ESS) Round 10, conducted in 2020, has an entire module based around this subject, and is available for our analytical use.</p>
+<p>For the purposes of our project, we will be looking at the relationship between measures of social trust and the importance of democracy in six regions of Europe: Western Continental Europe, Central Europe, Southern Europe, Eastern Europe, the Nordics and the British Isles. We have used data from ESS 10, conducted by the Core Scientific Team (CST) based in the University of London. Our objective is to discover if there is a meaningful/significant relationship between these predictors and the importance of democracy using linear discriminant analysis and decision trees. Comparisons between these regions using multiple approaches may provide insight into the continental differences in political thought.</p>
+<p>Our analysis focused on 9 predictors of social trust: <em>ppltrst, pplhlp, pplfair, trstprl, trstplt, trstlgl, trstplc, trstprt,</em> and <em>trstsci,</em> and the response variable implvdm - importance of democracy for [country]. All were measured on a 11-step Likert scale (0-10), but the response variable was partitioned into categories of Low, Medium or High, as their relative properties are of more interest than predicting the exact numeric response. The data was cleaned and preprocessed split into training and testing sets, then linear discriminant analysis and decision tree models were used to identify relationships with reported importance of democracy. We evaluated the performance of each model and discussed their relative strengths and limitations. Comparing LDA and decision trees will hopefully allow a more complete understanding of democracy’s relative worth within Europe.</p>
+</section>
+<section id="linear-discriminant-analysis-model-ais-jacqueline-samuel" class="level3">
+<h3 class="anchored" data-anchor-id="linear-discriminant-analysis-model-ais-jacqueline-samuel">Linear Discriminant Analysis Model (Ais, Jacqueline, Samuel):</h3>
+<p>Linear Discriminant Analysis (LDA) is the parametric model best suited to classification problems with more than two responses. As with any parametric method, it comes with assumptions. 1) The classes can be described using a multivariate normal distribution. 2) The classes share the same covariance matrix. 3) The observations are independent of each other. LDA’s benefits are in its simplicity and scalability, while LDA’s weaknesses lie in assumption 2 and its sensitivity to outliers/extreme values. [any further details of LDA - Bayesian origins? - put discriminant formula here] [objective of using LDA] [R code for LDA model .lda] [confusion matrices (images/tables) and what they mean] [relative importance of variables, check using magnitude of discriminant scores. lda_model$scaling] The significance of variables was slightly different between the different regions. In Central Europe, Eastern Europe, the Nordics, and Southern Europe the most significant factor was “trst_sci”. However, in the UK the most significant variable was “trst_lgl”. And for Western Central Europe the most significant factor was “pplfair”. K-fold cross validation was used to determine the accuracy of the model. [K-fold R code here] Results of the K-fold : Central Europe : ~89.24% Eastern Europe : ~82.11% Nordics : ~94.16% Southern Europe : ~86.65% UK : ~86.22% Western Central Europe : ~87.67% The overall accuracy of the K-fold was ~87.68%. [feel free to rearrange and readjust as needed, just please don’t delete my stuff without asking]</p>
+</section>
+<section id="random-forest-model-ryan-tan" class="level3">
+<h3 class="anchored" data-anchor-id="random-forest-model-ryan-tan">Random Forest Model (Ryan, Tan):</h3>
+</section>
 <section id="central-europe" class="level3">
 <h3 class="anchored" data-anchor-id="central-europe">Central Europe</h3>
 <div class="cell">
@@ -81,14 +100,14 @@ Decision Tree for Central Europe :</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -108,7 +127,7 @@ Pruned Tree for Central Europe :</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-2-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-2-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -127,7 +146,7 @@ trstsci -0.6307304 17.541912  14.702810             5.793368         158.9449</c
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-2-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-2-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -164,14 +183,14 @@ Decision Tree for Eastern Europe :</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -191,7 +210,7 @@ Pruned Tree for Eastern Europe :</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-3-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-3-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -210,7 +229,7 @@ trstsci 10.327659  6.0703700  7.7172652            13.216328         78.30219</c
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-3-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-3-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -247,14 +266,14 @@ Decision Tree for Southern Europe :</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-4-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -274,7 +293,7 @@ Pruned Tree for Southern Europe :</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-4-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-4-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -293,7 +312,7 @@ trstsci 27.16124  11.5038726  8.1239252             29.96972         160.6446</c
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-4-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-4-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -330,14 +349,14 @@ Decision Tree for West-Central Europe :</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -357,26 +376,26 @@ Pruned Tree for West-Central Europe :</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-5-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-5-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>West-Central Europe Random Forest Variable Importance             High        Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
-ppltrst  5.612053  5.4603625  3.5114914             7.036351         45.30136
-pplhlp   5.760221  1.5774690 -0.5472433             5.446430         46.74159
-pplfair  9.549650  5.3576575 -0.1356192             9.897588         44.05564
-trstprl  7.497466  4.8303370  5.7233296             9.261624         39.27118
-trstlgl 12.542193  0.6952751 -1.7849647            12.079332         40.77122
-trstplc  4.499818  5.8791329 -2.7241888             4.201775         44.74001
-trstplt 20.241848 -1.2220855 -2.4575730            19.523271         35.98083
-trstprt 14.165498  0.8860432 -2.9298023            13.613898         33.32254
-trstsci 10.884857  5.8002170 10.9383707            14.626807         51.77161</code></pre>
+ppltrst  6.354031  4.1341979  4.2036282             7.791532         45.49687
+pplhlp   4.910767  2.2446923 -2.1299920             4.326609         46.56335
+pplfair 11.031251  4.7563985  0.2133452            11.217790         43.37651
+trstprl 10.372876  6.2540246  4.7984511            12.008662         38.51318
+trstlgl 11.256547  0.5610832 -1.9332987            10.440222         41.49469
+trstplc  4.953725  6.6193668 -1.8408388             5.110692         44.57926
+trstplt 21.772555 -0.3354000 -3.0379500            20.724324         35.29983
+trstprt 12.389264  2.5295106 -2.1769829            11.883768         33.38599
+trstsci  9.035376  4.9716931 12.1476321            13.004490         52.41968</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-5-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-5-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -386,8 +405,8 @@ trstsci 10.884857  5.8002170 10.9383707            14.626807         51.77161</c
            region.ytest
 region.pred High  Low Medium
      High   1932   54    161
-     Low       1    0      0
-     Medium    1    1      0
+     Low       2    0      0
+     Medium    0    1      0
 
 Random Forest Accuracy for West-Central Europe: 89.86%</code></pre>
 </div>
@@ -413,14 +432,14 @@ Decision Tree for Nordics :</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -440,7 +459,7 @@ Pruned Tree for Nordics :</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-6-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -459,7 +478,7 @@ trstsci -7.689876 3.1325185  3.0476365           -6.4836201         25.63892</co
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-6-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-6-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -496,14 +515,14 @@ Decision Tree for United Kingdom :</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -523,26 +542,26 @@ Pruned Tree for United Kingdom :</code></pre>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>United Kingdom Random Forest Variable Importance             High        Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
-ppltrst  6.335306  1.4900501 -1.1298153             5.860120         31.86546
-pplhlp   7.730095 -0.6659739  0.3502832             7.306723         31.51567
-pplfair  9.063822 -2.1780359  3.3065856             9.302467         30.34422
-trstprl  7.207988 -1.0246463 -1.3400533             6.605943         33.04972
-trstlgl  6.284401 -1.5874431 -0.9914052             5.637131         32.70845
-trstplc  6.298371  2.4497173  1.4917256             6.672516         35.98215
-trstplt 10.069290 -2.0895011  2.6079401            10.187871         26.74223
-trstprt  8.638965  0.2662680 -1.1138713             8.245680         26.73694
-trstsci 10.033977  6.1684543  3.1815287            11.232579         35.55095</code></pre>
+<pre><code>United Kingdom Random Forest Variable Importance             High         Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
+ppltrst  5.189081  4.14052803 -2.2114493             4.922356         32.53477
+pplhlp   8.538290 -1.35243639 -2.3890649             7.331631         31.07817
+pplfair  7.635267 -2.78555748  1.5597983             7.652810         29.39468
+trstprl  5.002036 -0.46940074 -2.0615320             4.252290         32.59707
+trstlgl  6.131851  0.25854508 -3.6183567             4.949231         33.42380
+trstplc  7.603558 -0.48550890  1.4454857             7.706264         36.07982
+trstplt 10.334646 -0.09808197  1.0603321            10.395597         26.97280
+trstprt  9.217370 -0.51824570 -1.8878018             8.496362         26.82672
+trstsci  9.830274  6.17466607  0.5031837            10.535508         35.21013</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="DecisionTreesPlots_files/figure-html/unnamed-chunk-7-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-7-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
