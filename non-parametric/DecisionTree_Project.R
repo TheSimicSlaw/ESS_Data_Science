@@ -86,7 +86,7 @@ decision_tree_model <- function(data, region_name = "Region", split_ratio = 0.7)
   accuracy <- sum(diag(conf_matrix)) / sum(conf_matrix)
   
   # Output
-  cat("\n===", region_name, "===\n")
+  cat("\n=== Unpruned Decision Tree for", region_name, "===\n")
   cat("Balanced Sample Size:", nrow(data_bal), "| Train:", nrow(train_data), "| Test:", nrow(test_data), "\n")
   print(conf_matrix)
   cat(sprintf("Accuracy: %.2f%%\n", accuracy * 100))

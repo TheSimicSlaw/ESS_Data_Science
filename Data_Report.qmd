@@ -206,11 +206,21 @@ west_central_2 <- categorize_democracy(factoring(west_central))
 #| echo: false
 central.data_split <- prepare_data_split(central_2)
 
-central.tree <- decision_tree_model(central.data_split$train, central.data_split$test, "Central Europe")
+central.tree <- decision_tree_model(central.data_split$train, central.data_split$test, "Central Europe (70/30)")
 
-central.pruned_tree <- get_prune_chart(central.tree, central.data_split$train, central.data_split$test, "Central Europe")
+central.pruned_tree <- get_prune_chart(central.tree, central.data_split$train, central.data_split$test, "Central Europe (70/30)")
 
 central.random_forest <- random_forest_model(central_2, "Central Europe")
+
+```
+
+```{r}
+#| echo: false
+central.data_split <- prepare_data_split(central_2, 0.8)
+
+central.tree <- decision_tree_model(central.data_split$train, central.data_split$test, "Central Europe (80/20)")
+
+central.pruned_tree <- get_prune_chart(central.tree, central.data_split$train, central.data_split$test, "Central Europe (80/20)")=
 ```
 
 \[analysis\]
