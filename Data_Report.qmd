@@ -200,6 +200,8 @@ uk_2 <- categorize_democracy(factoring(uk))
 west_central_2 <- categorize_democracy(factoring(west_central))
 ```
 
+
+
 ### Central Europe
 
 ```{r}
@@ -210,12 +212,7 @@ central.tree <- decision_tree_model(central.data_split$train, central.data_split
 
 central.pruned_tree <- get_prune_chart(central.tree, central.data_split$train, central.data_split$test, "Central Europe (70/30)")
 
-central.random_forest <- random_forest_model(central_2, "Central Europe")
 
-```
-
-```{r}
-#| echo: false
 central.data_split <- prepare_data_split(central_2, 0.8)
 
 central.tree <- decision_tree_model(central.data_split$train, central.data_split$test, "Central Europe (80/20)")
@@ -224,6 +221,11 @@ central.pruned_tree <- get_prune_chart(central.tree, central.data_split$train, c
 ```
 
 \[analysis\]
+
+```{r}
+#| echo: false
+central.random_forest <- random_forest_model(central_2, "Central Europe")
+```
 
 ### Eastern Europe
 
@@ -235,11 +237,6 @@ eastern.tree <- decision_tree_model(eastern.data_split$train, eastern.data_split
 
 eastern.pruned_tree <- get_prune_chart(eastern.tree, eastern.data_split$train, eastern.data_split$test, "Eastern Europe (70/30)")
 
-eastern.random_forest <- random_forest_model(eastern_2, "Eastern Europe")
-```
-
-```{r}
-#| echo: false
 eastern.data_split <- prepare_data_split(eastern_2, 0.8)
 
 eastern.tree <- decision_tree_model(eastern.data_split$train, eastern.data_split$test, "Eastern Europe (80/20)")
@@ -248,6 +245,12 @@ eastern.pruned_tree <- get_prune_chart(eastern.tree, eastern.data_split$train, e
 
 ```
 \[analysis\]
+
+```{r}
+#| echo: false
+eastern.random_forest <- random_forest_model(eastern_2, "Eastern Europe")
+```
+
 
 ### Southern Europe
 
@@ -259,11 +262,7 @@ southern.tree <- decision_tree_model(southern.data_split$train, southern.data_sp
 
 southern.pruned_tree <- get_prune_chart(southern.tree, southern.data_split$train, southern.data_split$test, "Southern Europe (70/30)")
 
-southern.random_forest <- random_forest_model(southern_2, "Southern Europe")
-```
 
-```{r}
-#| echo: false
 southern.data_split <- prepare_data_split(southern_2, 0.8)
 
 southern.tree <- decision_tree_model(southern.data_split$train, southern.data_split$test, "Southern Europe (80/20)")
@@ -271,6 +270,11 @@ southern.tree <- decision_tree_model(southern.data_split$train, southern.data_sp
 southern.pruned_tree <- get_prune_chart(southern.tree, southern.data_split$train, southern.data_split$test, "Southern Europe (80/20)")
 ```
 \[analysis\]
+
+```{r}
+#| echo: false
+southern.random_forest <- random_forest_model(southern_2, "Southern Europe")
+```
 
 ### West-Central Europe
 
@@ -282,11 +286,7 @@ west_central.tree <- decision_tree_model(west_central.data_split$train, west_cen
 
 west_central.pruned_tree <- get_prune_chart(west_central.tree, west_central.data_split$train, west_central.data_split$test, "West-Central Europe (70/30)")
 
-west_central.random_forest <- random_forest_model(west_central_2, "West-Central Europe")
-```
 
-```{r}
-#| echo: false
 west_central.data_split <- prepare_data_split(west_central_2, 0.8)
 
 west_central.tree <- decision_tree_model(west_central.data_split$train, west_central.data_split$test, "West-Central Europe (80/20)")
@@ -294,6 +294,11 @@ west_central.tree <- decision_tree_model(west_central.data_split$train, west_cen
 west_central.pruned_tree <- get_prune_chart(west_central.tree, west_central.data_split$train, west_central.data_split$test, "West-Central Europe (80/20)")
 ```
 \[analysis\]
+
+```{r}
+#| echo: false
+west_central.random_forest <- random_forest_model(west_central_2, "West-Central Europe")
+```
 
 ### Nordics
 
@@ -305,11 +310,6 @@ nordics.tree <- decision_tree_model(nordics.data_split$train, nordics.data_split
 
 nordics.pruned_tree <- get_prune_chart(nordics.tree, nordics.data_split$train, nordics.data_split$test, "Nordics (70/30)")
 
-nordics.random_forest <- random_forest_model(nordics_2, "Nordics")
-```
-
-```{r}
-#| echo: false
 nordics.data_split <- prepare_data_split(nordics_2, 0.8)
 
 nordics.tree <- decision_tree_model(nordics.data_split$train, nordics.data_split$test, "Nordics (80/20)")
@@ -317,6 +317,14 @@ nordics.tree <- decision_tree_model(nordics.data_split$train, nordics.data_split
 nordics.pruned_tree <- get_prune_chart(nordics.tree, nordics.data_split$train, nordics.data_split$test, "Nordics (80/20)")
 ```
 \[analysis\]
+
+
+```{r}
+#| echo: false
+nordics.random_forest <- random_forest_model(nordics_2, "Nordics")
+```
+
+
 
 ### United Kingdom
 
@@ -328,11 +336,7 @@ uk.tree <- decision_tree_model(uk.data_split$train, uk.data_split$test, "United 
 
 uk.pruned_tree <- get_prune_chart(uk.tree, uk.data_split$train, uk.data_split$test, "United Kingdom")
 
-uk.random_forest <- random_forest_model(uk_2, "United Kingdom")
-```
 
-```{r}
-#| echo: false
 uk.data_split <- prepare_data_split(uk_2)
 
 uk.tree <- decision_tree_model(uk.data_split$train, uk.data_split$test, "United Kingdom (80/20)")
@@ -340,5 +344,10 @@ uk.tree <- decision_tree_model(uk.data_split$train, uk.data_split$test, "United 
 uk.pruned_tree <- get_prune_chart(uk.tree, uk.data_split$train, uk.data_split$test, "United Kingdom (80/20)")
 ```
 \[analysis\]
+
+```{r}
+#| echo: false
+uk.random_forest <- random_forest_model(uk_2, "United Kingdom")
+```
 
 ------------------------------------------------------------------------
