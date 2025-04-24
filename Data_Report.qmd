@@ -48,7 +48,7 @@ Western Central Europe : \~87.67%\
 
 The overall accuracy of the K-fold was \~87.68%.\
 
-### Random Forest Model (Ryan, Tan):
+### Decision Tree & Random Forest Model (Ryan, Tan):
 
 ```{r}
 #| echo: false
@@ -190,7 +190,7 @@ southern <- read.csv("southern_europe_clean_csv.csv")
 uk <- read.csv("uk_clean_csv.csv")
 west_central <- read.csv("wce_clean_csv.csv")
 
-setwd("./experimental_models/DecisionTrees")
+setwd("..")
 
 central_2 <- categorize_democracy(factoring(central))
 eastern_2 <- categorize_democracy(factoring(eastern))
@@ -202,7 +202,7 @@ west_central_2 <- categorize_democracy(factoring(west_central))
 
 
 
-### Central Europe
+#### Central Europe
 
 ```{r}
 #| echo: false
@@ -227,7 +227,9 @@ central.pruned_tree <- get_prune_chart(central.tree, central.data_split$train, c
 central.random_forest <- random_forest_model(central_2, "Central Europe")
 ```
 
-### Eastern Europe
+It's rather interesting that trstplt, trstprt, and trstprt have the highest mean decrease accuracy and the lowest mean decrease gini. Given that the gini plot is rather even while the accuracy plot is more staggered, I'd be inclined to say that the mean decrease accuracy and thus trstplt, trstprt, and trstprt are ore significant.
+
+#### Eastern Europe
 
 ```{r}
 #| echo: false
@@ -251,8 +253,10 @@ eastern.pruned_tree <- get_prune_chart(eastern.tree, eastern.data_split$train, e
 eastern.random_forest <- random_forest_model(eastern_2, "Eastern Europe")
 ```
 
+Here, trstsci and trstplc are the highest for mean decrease accuracy and both in the top three for the mean decrease gini. This fits with the decision trees above, as trstsci and trstplc are consistently the main two splits.
 
-### Southern Europe
+
+#### Southern Europe
 
 ```{r}
 #| echo: false
@@ -276,7 +280,7 @@ southern.pruned_tree <- get_prune_chart(southern.tree, southern.data_split$train
 southern.random_forest <- random_forest_model(southern_2, "Southern Europe")
 ```
 
-### West-Central Europe
+#### West-Central Europe
 
 ```{r}
 #| echo: false
@@ -300,7 +304,7 @@ west_central.pruned_tree <- get_prune_chart(west_central.tree, west_central.data
 west_central.random_forest <- random_forest_model(west_central_2, "West-Central Europe")
 ```
 
-### Nordics
+#### Nordics
 
 ```{r}
 #| echo: false
@@ -326,7 +330,7 @@ nordics.random_forest <- random_forest_model(nordics_2, "Nordics")
 
 
 
-### United Kingdom
+#### United Kingdom
 
 ```{r}
 #| echo: false
