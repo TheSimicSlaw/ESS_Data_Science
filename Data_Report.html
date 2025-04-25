@@ -34,6 +34,35 @@ ul.task-list li input[type="checkbox"] {
 <link href="Data_Report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="Data_Report_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -55,7 +84,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Group 20 - Emma ‘Ais’ Burniston, Ryan Camp, Jacqueline Sanchez, Tan Tran </p>
+             <p>Group 20 - Emma ‘Ais’ Burniston, Ryan Camp, Jacqueline Sanchez, Tan Tran, Samuel Mlinka </p>
           </div>
   </div>
     
@@ -74,28 +103,60 @@ ul.task-list li input[type="checkbox"] {
 <p>For the purposes of our project, we will be looking at the relationship between measures of social trust and the importance of democracy in six regions of Europe: Western Continental Europe, Central Europe, Southern Europe, Eastern Europe, the Nordics and the British Isles. We have used data from ESS 10, conducted by the Core Scientific Team (CST) based in the University of London. Our objective is to discover if there is a meaningful/significant relationship between these predictors and the importance of democracy using linear discriminant analysis and decision trees. Comparisons between these regions using multiple approaches may provide insight into the continental differences in political thought.</p>
 <p>Our analysis focused on 9 predictors of social trust: <em>ppltrst, pplhlp, pplfair, trstprl, trstplt, trstlgl, trstplc, trstprt,</em> and <em>trstsci,</em> and the response variable implvdm - importance of democracy for [country]. All were measured on a 11-step Likert scale (0-10), but the response variable was partitioned into categories of Low, Medium or High, as their relative properties are of more interest than predicting the exact numeric response. The data was cleaned and preprocessed split into training and testing sets, then linear discriminant analysis and decision tree models were used to identify relationships with reported importance of democracy. We evaluated the performance of each model and discussed their relative strengths and limitations. Comparing LDA and decision trees will hopefully allow a more complete understanding of democracy’s relative worth within Europe.</p>
 </section>
-<section id="linear-discriminant-analysis-model-ais-jacqueline-samuel" class="level3">
-<h3 class="anchored" data-anchor-id="linear-discriminant-analysis-model-ais-jacqueline-samuel">Linear Discriminant Analysis Model (Ais, Jacqueline, Samuel):</h3>
-<p>Linear Discriminant Analysis (LDA) is the parametric model best suited to classification problems with more than two responses. As with any parametric method, it comes with assumptions. 1) The classes can be described using a multivariate normal distribution. 2) The classes share the same covariance matrix. 3) The observations are independent of each other. LDA’s benefits are in its simplicity and scalability, while LDA’s weaknesses lie in assumption 2 and its sensitivity to outliers/extreme values. [any further details of LDA - Bayesian origins? - put discriminant formula here] [objective of using LDA] [R code for LDA model .lda] [confusion matrices (images/tables) and what they mean] [relative importance of variables, check using magnitude of discriminant scores. lda_model$scaling] The significance of variables was slightly different between the different regions. In Central Europe, Eastern Europe, the Nordics, and Southern Europe the most significant factor was “trst_sci”. However, in the UK the most significant variable was “trst_lgl”. And for Western Central Europe the most significant factor was “pplfair”. K-fold cross validation was used to determine the accuracy of the model. [K-fold R code here] Results of the K-fold : Central Europe : ~89.24% Eastern Europe : ~82.11% Nordics : ~94.16% Southern Europe : ~86.65% UK : ~86.22% Western Central Europe : ~87.67% The overall accuracy of the K-fold was ~87.68%. [feel free to rearrange and readjust as needed, just please don’t delete my stuff without asking]</p>
+<section id="linear-discriminant-analysis-model-ais-samuel" class="level3">
+<h3 class="anchored" data-anchor-id="linear-discriminant-analysis-model-ais-samuel">Linear Discriminant Analysis Model (Ais, Samuel):</h3>
+<p>Linear Discriminant Analysis (LDA) is the parametric model best suited to classification problems with more than two responses. As with any parametric method, it comes with assumptions. 1) The classes can be described using a multivariate normal distribution. 2) The classes share the same covariance matrix. 3) The observations are independent of each other. LDA’s benefits are in its simplicity and scalability, while LDA’s weaknesses lie in assumption 2 and its sensitivity to outliers/extreme values.<br>
+</p>
+<p>The formula for determining the linear discriminant score for class i is as follows:<br>
+</p>
+<p><span class="math display">\[g_i(x) = x^T \Sigma^{-1} \mu_i - \frac{1}{2} \mu_i^T \Sigma^{-1} \mu_i + \ln(P(\omega_i))\]</span></p>
+<p>Where x is the input feature vector, μi is the mean vector of class i, Σ is the shared covariance matrix and P(ωi​) is the prior probability of class i.<br>
+</p>
+<p>Our reasoning for using linear discriminant variance on classes derived from the implvdm - Low (0-4), Medium (5-6), and High (7-10) - henceforth dem_imp, rather than splitting at 5 for logistic regression is that higher point Likert scales are designed to measure granularity, especially within the context of social science research. Our objective was to determine which factors were useful for predicting dem_imp and whether they varied based on regionality.<br>
+</p>
+<p>The test accuracies in the order given above were 0.8914, 0.8278, 0.9465, 0.8688, 0.8491, and 0.8713.<br>
+</p>
+<p>The significance of variables was slightly different between the different regions. In Central Europe, Eastern Europe, the Nordics, and Southern Europe the most significant factor was “trst_sci”. However, in the UK the most significant variable was “trst_lgl”. And for Western Central Europe the most significant factor was “pplfair”.<br>
+</p>
+<p>K-fold cross validation was used to determine the accuracy of the model.<br>
+</p>
+<p>Results of the 5 fold cross validation :<br>
+Central Europe : ~89.24%<br>
+Eastern Europe : ~82.11%<br>
+Nordics : ~94.16%<br>
+Southern Europe : ~86.65%<br>
+UK : ~86.22%<br>
+Western Central Europe : ~87.67%<br>
+</p>
+<p>The overall accuracy of the K-fold was ~87.68%.<br>
+</p>
 </section>
-<section id="random-forest-model-ryan-tan" class="level3">
-<h3 class="anchored" data-anchor-id="random-forest-model-ryan-tan">Random Forest Model (Ryan, Tan):</h3>
+<section id="decision-tree-random-forest-model-tan-jacqueline-ryan" class="level3">
+<h3 class="anchored" data-anchor-id="decision-tree-random-forest-model-tan-jacqueline-ryan">Decision Tree &amp; Random Forest Model (Tan, Jacqueline, Ryan):</h3>
 </section>
-<section id="central-europe" class="level3">
-<h3 class="anchored" data-anchor-id="central-europe">Central Europe</h3>
+<section id="decision-trees" class="level3">
+<h3 class="anchored" data-anchor-id="decision-trees">Decision Trees</h3>
+<p>A decision tree is a supervised machine learning model used for classification or regression tasks. It works by splitting the data into branches based on feature values, forming a tree-like structure where each internal node represents a decision rule, and each leaf node represents an outcome. The goal is to create splits that best separate the target classes, making the model easy to interpret and visualize. Decision trees are particularly useful for understanding which features are most important in predicting the outcome.</p>
+<p>In our function, the dataset is first balanced across classes using stratified sampling, ensuring equal representation of each class. A stratified train-test split is then applied based on a user-defined ratio (default 70/30). The model is trained on the training set and evaluated on the test set using a confusion matrix and accuracy metric. The resulting tree structure is visualized to aid interpretation, and the function returns performance metrics for further analysis.</p>
+<p>Excerpt for Code:</p>
+<p>min_n &lt;- min(table(data$dem_imp)) data_bal &lt;- data %&gt;% group_by(dem_imp) %&gt;% slice_sample(n = min_n) %&gt;% ungroup()</p>
+<p>train_idx &lt;- createDataPartition(data_bal$dem_imp, p = split_ratio, list = FALSE) train_data &lt;- data_bal[train_idx, ] test_data &lt;- data_bal[-train_idx, ]</p>
+<p>tree_model &lt;- tree(dem_imp ~ ppltrst + pplhlp + pplfair + trstprl + trstlgl + trstplc + trstplt + trstprt + trstsci, data = train_data) predictions &lt;- predict(tree_model, test_data, type = “class”) conf_matrix &lt;- table(Predicted = predictions, Actual = test_data$dem_imp)</p>
+<section id="central-europe" class="level4">
+<h4 class="anchored" data-anchor-id="central-europe">Central Europe</h4>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>
-=== Confusion Matrix for Central Europe ===
+=== Confusion Matrix for Central Europe (70/30) ===
          Actual
 Predicted High Low Medium
    High     78  19     42
    Low      21  74     44
    Medium   45  51     58
 
-Accuracy for Central Europe: 48.61%
+Accuracy for Central Europe (70/30): 48.61%
 
-Decision Tree for Central Europe :</code></pre>
+Decision Tree for Central Europe (70/30) :</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -113,16 +174,29 @@ Decision Tree for Central Europe :</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-=== PRUNED Confusion Matrix for Central Europe ===
+=== PRUNED Confusion Matrix for Central Europe (70/30) ===
          Actual
 Predicted High Low Medium
    High     71  15     31
    Low      21  74     44
    Medium   52  55     69
 
-Pruned Accuracy for Central Europe: 49.54%
+Pruned Accuracy for Central Europe (70/30): 49.54%
 
-Pruned Tree for Central Europe :</code></pre>
+Pruned Tree for Central Europe (70/30) :</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Confusion Matrix for Central Europe (80/20) ===
+         Actual
+Predicted High Low Medium
+   High     49   7     21
+   Low      18  56     29
+   Medium   29  33     46
+
+Accuracy for Central Europe (80/20): 52.43%
+
+Decision Tree for Central Europe (80/20) :</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -131,6 +205,36 @@ Pruned Tree for Central Europe :</code></pre>
 </figure>
 </div>
 </div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-2-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== PRUNED Confusion Matrix for Central Europe (80/20) ===
+         Actual
+Predicted High Low Medium
+   High     49   7     21
+   Low      18  56     29
+   Medium   29  33     46
+
+Pruned Accuracy for Central Europe (80/20): 52.43%
+
+Pruned Tree for Central Europe (80/20) :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-2-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In Central Europe, both the 70/30 and 80/20 splits produced moderately complex trees with an accuracy of 48.6% and 52.4%, respectively. With pruning, the accuracies were 49.5% and 52.4%, respectively. The minimal differences suggest that pruning helped simplify the model, but didn’t significantly boost performance. This indicates that Central Europe’s predictor space contains enough variation for meaningful class separation. The most influential features were trstprl and trstsci, followed by pplfair and pplhlp. Notably, the distributions of these trust variables are skewed toward higher values, which likely made it easier for the model to differentiate between classes—especially in the 80/20 configuration. Overall, the model struggles to classify the “Low” and “Medium”, suggesting there is potential underfitting or overlapping features.</p>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Central Europe Random Forest Variable Importance              High       Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
 ppltrst  4.0902980 -2.054502   3.913397             4.722438         155.6989
@@ -146,7 +250,7 @@ trstsci -0.6307304 17.541912  14.702810             5.793368         158.9449</c
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Data_Report_files/figure-html/unnamed-chunk-2-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -162,106 +266,23 @@ region.pred High  Low Medium
 Random Forest Accuracy for Central Europe: 90.47%</code></pre>
 </div>
 </div>
-<p>[analysis]</p>
+<p>It’s rather interesting that trstplt, trstprt, and trstprt have the highest mean decrease accuracy and the lowest mean decrease gini. Given that the gini plot is rather even while the accuracy plot is more staggered, I’d be inclined to say that the mean decrease accuracy and thus trstplt, trstprt, and trstprt are ore significant. The accuracy rate of 90.47% is rather solid.</p>
 </section>
-<section id="eastern-europe" class="level3">
-<h3 class="anchored" data-anchor-id="eastern-europe">Eastern Europe</h3>
+<section id="eastern-europe" class="level4">
+<h4 class="anchored" data-anchor-id="eastern-europe">Eastern Europe</h4>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>
-=== Confusion Matrix for Eastern Europe ===
+=== Confusion Matrix for Eastern Europe (70/30) ===
          Actual
 Predicted High Low Medium
    High     23  14     15
    Low      24  39     31
    Medium   31  25     32
 
-Accuracy for Eastern Europe: 40.17%
+Accuracy for Eastern Europe (70/30): 40.17%
 
-Decision Tree for Eastern Europe :</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Data_Report_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Data_Report_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-=== PRUNED Confusion Matrix for Eastern Europe ===
-         Actual
-Predicted High Low Medium
-   High     32  13     18
-   Low      30  51     38
-   Medium   16  14     22
-
-Pruned Accuracy for Eastern Europe: 44.87%
-
-Pruned Tree for Eastern Europe :</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Data_Report_files/figure-html/unnamed-chunk-3-3.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Eastern Europe Random Forest Variable Importance             High        Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
-ppltrst  6.889980 -5.3335749 -1.8481021             5.051663         75.97363
-pplhlp   6.069161 -2.5308572 -2.2757363             4.487405         78.39719
-pplfair  7.926904 -2.1427176 -1.5547858             6.524497         76.44314
-trstprl  9.201684  3.6139616  0.4246170             9.541274         55.54261
-trstlgl 10.133462 -2.6680590  0.4368216             9.500642         69.92298
-trstplc 12.188130  2.6400667  0.8312947            12.140866         78.69794
-trstplt  9.544265 -1.5418680 -2.5186067             8.531685         47.81492
-trstprt  9.728802 -0.9936628 -0.2039233             9.215759         53.36000
-trstsci 10.327659  6.0703700  7.7172652            13.216328         78.30219</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Data_Report_files/figure-html/unnamed-chunk-3-4.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-=== Random Forest Confusion Matrix for Eastern Europe ===
-           region.ytest
-region.pred High  Low Medium
-     High   1832  142    222
-     Low       6    1      0
-     Medium    8    0      6
-
-Random Forest Accuracy for Eastern Europe: 82.95%</code></pre>
-</div>
-</div>
-<p>[analysis]</p>
-</section>
-<section id="southern-europe" class="level3">
-<h3 class="anchored" data-anchor-id="southern-europe">Southern Europe</h3>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-=== Confusion Matrix for Southern Europe ===
-         Actual
-Predicted High Low Medium
-   High     79  55     63
-   Low      40  87     64
-   Medium   45  22     37
-
-Accuracy for Southern Europe: 41.26%
-
-Decision Tree for Southern Europe :</code></pre>
+Decision Tree for Eastern Europe (70/30) :</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -279,16 +300,29 @@ Decision Tree for Southern Europe :</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-=== PRUNED Confusion Matrix for Southern Europe ===
+=== PRUNED Confusion Matrix for Eastern Europe (70/30) ===
          Actual
 Predicted High Low Medium
-   High     79  55     63
-   Low      40  87     64
-   Medium   45  22     37
+   High     32  13     18
+   Low      30  51     38
+   Medium   16  14     22
 
-Pruned Accuracy for Southern Europe: 41.26%
+Pruned Accuracy for Eastern Europe (70/30): 44.87%
 
-Pruned Tree for Southern Europe :</code></pre>
+Pruned Tree for Eastern Europe (70/30) :</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Confusion Matrix for Eastern Europe (80/20) ===
+         Actual
+Predicted High Low Medium
+   High     19   8     14
+   Low      20  28     16
+   Medium   13  16     22
+
+Accuracy for Eastern Europe (80/20): 44.23%
+
+Decision Tree for Eastern Europe (80/20) :</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -296,18 +330,6 @@ Pruned Tree for Southern Europe :</code></pre>
 <p><img src="Data_Report_files/figure-html/unnamed-chunk-4-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Southern Europe Random Forest Variable Importance            High         Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
-ppltrst 19.91498  -3.9706170  0.3570863             18.79624         157.1929
-pplhlp  14.81778   0.8121901 -3.6022937             13.57601         161.1389
-pplfair 19.44356   2.9256054  0.8353347             19.62534         150.7077
-trstprl 23.38001  -8.2799206  0.1783372             22.05468         137.9562
-trstlgl 32.60438  -6.9798506  0.2757977             31.74744         141.1023
-trstplc 32.35363   0.4218030 -4.6703752             30.93344         153.6530
-trstplt 36.38325 -10.5743564 -7.4681223             34.36867         115.5692
-trstprt 30.16652  -1.7806010 -1.9950345             29.58330         118.6661
-trstsci 27.16124  11.5038726  8.1239252             29.96972         160.6446</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -318,33 +340,38 @@ trstsci 27.16124  11.5038726  8.1239252             29.96972         160.6446</c
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-=== Random Forest Confusion Matrix for Southern Europe ===
-           region.ytest
-region.pred High  Low Medium
-     High   5189  266    517
-     Low       4    2      3
-     Medium   10    0      6
-
-Random Forest Accuracy for Southern Europe: 86.66%</code></pre>
-</div>
-</div>
-<p>[analysis]</p>
-</section>
-<section id="west-central-europe" class="level3">
-<h3 class="anchored" data-anchor-id="west-central-europe">West-Central Europe</h3>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-=== Confusion Matrix for West-Central Europe ===
+=== PRUNED Confusion Matrix for Eastern Europe (80/20) ===
          Actual
 Predicted High Low Medium
-   High     20   7      8
-   Low       5  18     11
-   Medium    5   5     11
+   High     23  12     17
+   Low      17  25     15
+   Medium   12  15     20
 
-Accuracy for West-Central Europe: 54.44%
+Pruned Accuracy for Eastern Europe (80/20): 43.59%
 
-Decision Tree for West-Central Europe :</code></pre>
+Pruned Tree for Eastern Europe (80/20) :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-4-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Eastern Europe showed modest improvements in accuracy after pruning for the 70/30 split, rising from 40.2% to 44.%. On the other hand, pruning reduced the accuracy from 44.2% to 43.6% for the 80/20 split. The model primarily splits on trstprl and trstsci, though the distribution plots reveal more constrained variation in key features like pplhlp and ppltrst. This limited variability may have made it harder for the model to confidently distinguish between levels of democratic importance. While pruning did help to reduce noise, the lack of strong separation in the data itself might be holding back overall performance.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Eastern Europe Random Forest Variable Importance             High        Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
+ppltrst  6.889980 -5.3335749 -1.8481021             5.051663         75.97363
+pplhlp   6.069161 -2.5308572 -2.2757363             4.487405         78.39719
+pplfair  7.926904 -2.1427176 -1.5547858             6.524497         76.44314
+trstprl  9.201684  3.6139616  0.4246170             9.541274         55.54261
+trstlgl 10.133462 -2.6680590  0.4368216             9.500642         69.92298
+trstplc 12.188130  2.6400667  0.8312947            12.140866         78.69794
+trstplt  9.544265 -1.5418680 -2.5186067             8.531685         47.81492
+trstprt  9.728802 -0.9936628 -0.2039233             9.215759         53.36000
+trstsci 10.327659  6.0703700  7.7172652            13.216328         78.30219</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -353,81 +380,35 @@ Decision Tree for West-Central Europe :</code></pre>
 </figure>
 </div>
 </div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Data_Report_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-=== PRUNED Confusion Matrix for West-Central Europe ===
-         Actual
-Predicted High Low Medium
-   High     23   8      8
-   Low       3  12      8
-   Medium    4  10     14
-
-Pruned Accuracy for West-Central Europe: 54.44%
-
-Pruned Tree for West-Central Europe :</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Data_Report_files/figure-html/unnamed-chunk-5-3.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>West-Central Europe Random Forest Variable Importance             High        Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
-ppltrst  6.354031  4.1341979  4.2036282             7.791532         45.49687
-pplhlp   4.910767  2.2446923 -2.1299920             4.326609         46.56335
-pplfair 11.031251  4.7563985  0.2133452            11.217790         43.37651
-trstprl 10.372876  6.2540246  4.7984511            12.008662         38.51318
-trstlgl 11.256547  0.5610832 -1.9332987            10.440222         41.49469
-trstplc  4.953725  6.6193668 -1.8408388             5.110692         44.57926
-trstplt 21.772555 -0.3354000 -3.0379500            20.724324         35.29983
-trstprt 12.389264  2.5295106 -2.1769829            11.883768         33.38599
-trstsci  9.035376  4.9716931 12.1476321            13.004490         52.41968</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="Data_Report_files/figure-html/unnamed-chunk-5-4.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-=== Random Forest Confusion Matrix for West-Central Europe ===
+=== Random Forest Confusion Matrix for Eastern Europe ===
            region.ytest
 region.pred High  Low Medium
-     High   1932   54    161
-     Low       2    0      0
-     Medium    0    1      0
+     High   1832  142    222
+     Low       6    1      0
+     Medium    8    0      6
 
-Random Forest Accuracy for West-Central Europe: 89.86%</code></pre>
+Random Forest Accuracy for Eastern Europe: 82.95%</code></pre>
 </div>
 </div>
-<p>[analysis]</p>
+<p>Here, trstsci and trstplc are the highest for mean decrease accuracy and both in the top three for the mean decrease gini. This fits with the decision trees above, as trstsci and trstplc are consistently the main two splits. The accuracy rate is the lowest of all the regions at 82.95%, but the consistency is informative, and it’s not a bad accuracy rate.</p>
 </section>
-<section id="nordics" class="level3">
-<h3 class="anchored" data-anchor-id="nordics">Nordics</h3>
+<section id="southern-europe" class="level4">
+<h4 class="anchored" data-anchor-id="southern-europe">Southern Europe</h4>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>
-=== Confusion Matrix for Nordics ===
+=== Confusion Matrix for Southern Europe (70/30) ===
          Actual
 Predicted High Low Medium
-   High      7   5      4
-   Low       4   8      8
-   Medium    6   4      5
+   High     79  55     63
+   Low      40  87     64
+   Medium   45  22     37
 
-Accuracy for Nordics: 39.22%
+Accuracy for Southern Europe (70/30): 41.26%
 
-Decision Tree for Nordics :</code></pre>
+Decision Tree for Southern Europe (70/30) :</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -445,16 +426,29 @@ Decision Tree for Nordics :</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-=== PRUNED Confusion Matrix for Nordics ===
+=== PRUNED Confusion Matrix for Southern Europe (70/30) ===
          Actual
 Predicted High Low Medium
-   High     12   5      7
-   Low       3   8      4
-   Medium    2   4      6
+   High     79  55     63
+   Low      40  87     64
+   Medium   45  22     37
 
-Pruned Accuracy for Nordics: 50.98%
+Pruned Accuracy for Southern Europe (70/30): 41.26%
 
-Pruned Tree for Nordics :</code></pre>
+Pruned Tree for Southern Europe (70/30) :</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Confusion Matrix for Southern Europe (80/20) ===
+         Actual
+Predicted High Low Medium
+   High     80  59     61
+   Low      29  50     48
+   Medium    0   0      0
+
+Accuracy for Southern Europe (80/20): 39.76%
+
+Decision Tree for Southern Europe (80/20) :</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
@@ -463,6 +457,288 @@ Pruned Tree for Nordics :</code></pre>
 </figure>
 </div>
 </div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-6-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== PRUNED Confusion Matrix for Southern Europe (80/20) ===
+         Actual
+Predicted High Low Medium
+   High     80  59     61
+   Low      29  50     48
+   Medium    0   0      0
+
+Pruned Accuracy for Southern Europe (80/20): 39.76%
+
+Pruned Tree for Southern Europe (80/20) :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-6-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In Southern Europe, pruning did not improve the model’s performance. Accuracy stayed at 41.3% (70/30) and 39.8% (80/20). In fact, pruning the tree suggests the model couldn’t find meaningful splits. This may reflect the region’s heavily skewed distributions, where trust levels in variables like trstprl and pplfair are generally low. Although class balancing was applied during training, the test set distributions may have remained skewed, limiting generalizability.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Southern Europe Random Forest Variable Importance            High         Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
+ppltrst 19.91498  -3.9706170  0.3570863             18.79624         157.1929
+pplhlp  14.81778   0.8121901 -3.6022937             13.57601         161.1389
+pplfair 19.44356   2.9256054  0.8353347             19.62534         150.7077
+trstprl 23.38001  -8.2799206  0.1783372             22.05468         137.9562
+trstlgl 32.60438  -6.9798506  0.2757977             31.74744         141.1023
+trstplc 32.35363   0.4218030 -4.6703752             30.93344         153.6530
+trstplt 36.38325 -10.5743564 -7.4681223             34.36867         115.5692
+trstprt 30.16652  -1.7806010 -1.9950345             29.58330         118.6661
+trstsci 27.16124  11.5038726  8.1239252             29.96972         160.6446</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Random Forest Confusion Matrix for Southern Europe ===
+           region.ytest
+region.pred High  Low Medium
+     High   5189  266    517
+     Low       4    2      3
+     Medium   10    0      6
+
+Random Forest Accuracy for Southern Europe: 86.66%</code></pre>
+</div>
+</div>
+<p>Like most of the random forest models here, the mean decrease in accuracy and the mean decrease in gini index are not particularly consistent. However, as the mean decrease in accuracy has a greater difference between the top chunk and the bottom chunk than gini does, I’m inclined to trust that more. The accuracy rate of 86.66% is not the best, but it’s still solid.</p>
+</section>
+<section id="west-central-europe" class="level4">
+<h4 class="anchored" data-anchor-id="west-central-europe">West-Central Europe</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Confusion Matrix for West-Central Europe (70/30) ===
+         Actual
+Predicted High Low Medium
+   High     20   7      8
+   Low       5  18     11
+   Medium    5   5     11
+
+Accuracy for West-Central Europe (70/30): 54.44%
+
+Decision Tree for West-Central Europe (70/30) :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== PRUNED Confusion Matrix for West-Central Europe (70/30) ===
+         Actual
+Predicted High Low Medium
+   High     23   8      8
+   Low       3  12      8
+   Medium    4  10     14
+
+Pruned Accuracy for West-Central Europe (70/30): 54.44%
+
+Pruned Tree for West-Central Europe (70/30) :</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Confusion Matrix for West-Central Europe (80/20) ===
+         Actual
+Predicted High Low Medium
+   High     12   4      8
+   Low       4   7      3
+   Medium    4   9      9
+
+Accuracy for West-Central Europe (80/20): 46.67%
+
+Decision Tree for West-Central Europe (80/20) :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-8-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== PRUNED Confusion Matrix for West-Central Europe (80/20) ===
+         Actual
+Predicted High Low Medium
+   High     16   6     12
+   Low       2  11      5
+   Medium    2   3      3
+
+Pruned Accuracy for West-Central Europe (80/20): 50.00%
+
+Pruned Tree for West-Central Europe (80/20) :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-8-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Western Central Europe had the strongest overall performance, with accuracy stayed 54.44% after pruning in the 70/30 split, but increased to 50% in the 80/20 split. Minimal improvement after pruning suggests the tree had already captured most of the useful signal without overfitting, and the predictor space was not overly complex. The trees here were well-structured and used a balanced mix of predictors like trstsci, pplhlp, and pplfair. The relatively even distribution of trust scores across the population likely made it easier for the model to learn meaningful patterns. This region’s results suggest that when trust measures are well-distributed, decision trees can perform quite well.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>West-Central Europe Random Forest Variable Importance             High        Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
+ppltrst  6.328245  3.4709132  3.9534057             7.627623         45.69713
+pplhlp   6.877707  1.7188212  0.1206263             6.908570         47.91904
+pplfair 12.662889  5.4073330 -0.4939136            12.887385         43.90532
+trstprl  7.238491  5.3010755  7.0791504             9.275810         38.94190
+trstlgl 14.787293  0.7794301 -2.1651996            13.854417         41.16203
+trstplc  4.365045  7.2401618 -2.6000876             4.299381         44.06999
+trstplt 24.474147 -0.2899255 -1.6102511            24.280242         35.59803
+trstprt 15.128617  3.6840304 -1.2134039            15.062031         33.57918
+trstsci 11.818827  3.8032624 12.3976689            15.973238         53.02837</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Random Forest Confusion Matrix for West-Central Europe ===
+           region.ytest
+region.pred High  Low Medium
+     High   1930   54    161
+     Low       1    0      0
+     Medium    3    1      0
+
+Random Forest Accuracy for West-Central Europe: 89.77%</code></pre>
+</div>
+</div>
+<p>West-Central Europe is an interesting case, as while the predictor with the greatest mean decrease in accuracy, trstplt, is at the bottom of the gini index metric, the second-greatest mean decrease in accuracy, trstsci, is the greatest mean decrease in gini index. This would seem to match the 70/30 tree, but trstsci is not as prominent in 80/20, not even appearing on the pruned tree. Regardless, the accuracy rate of 89.86% is still rather good.</p>
+</section>
+<section id="nordics" class="level4">
+<h4 class="anchored" data-anchor-id="nordics">Nordics</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Confusion Matrix for Nordics (70/30) ===
+         Actual
+Predicted High Low Medium
+   High      7   5      4
+   Low       4   8      8
+   Medium    6   4      5
+
+Accuracy for Nordics (70/30): 39.22%
+
+Decision Tree for Nordics (70/30) :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== PRUNED Confusion Matrix for Nordics (70/30) ===
+         Actual
+Predicted High Low Medium
+   High     12   5      7
+   Low       3   8      4
+   Medium    2   4      6
+
+Pruned Accuracy for Nordics (70/30): 50.98%
+
+Pruned Tree for Nordics (70/30) :</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Confusion Matrix for Nordics (80/20) ===
+         Actual
+Predicted High Low Medium
+   High      4   1      2
+   Low       6   4      5
+   Medium    1   6      4
+
+Accuracy for Nordics (80/20): 36.36%
+
+Decision Tree for Nordics (80/20) :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-10-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-10-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== PRUNED Confusion Matrix for Nordics (80/20) ===
+         Actual
+Predicted High Low Medium
+   High      7   2      2
+   Low       3   2      4
+   Medium    1   7      5
+
+Pruned Accuracy for Nordics (80/20): 42.42%
+
+Pruned Tree for Nordics (80/20) :</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-10-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In the Nordic countries, pruning led to noticeable gains in accuracy—from 39.2% to 51.0% (70/30) and from 36.4% to 42.4% (80/20). Despite relatively simple pruned trees, performance improved, likely due to the consistent and high-trust distributions seen in features like pplhlp and trstsci. These predictors likely provided enough signal for the model once overfitting was reduced. However, the skew toward high values may also make it harder to draw distinctions between the Medium and High categories of democratic importance, which could be why the improvement levels off below 55%.</p>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Nordics Random Forest Variable Importance             High       Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
 ppltrst  3.240077 2.7120851  1.4865808            3.7215797         24.65909
@@ -478,7 +754,7 @@ trstsci -7.689876 3.1325185  3.0476365           -6.4836201         25.63892</co
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Data_Report_files/figure-html/unnamed-chunk-6-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -494,35 +770,35 @@ region.pred High  Low Medium
 Random Forest Accuracy for Nordics: 96.35%</code></pre>
 </div>
 </div>
-<p>[analysis]</p>
+<p>The Nordics saw a return to the inconsistent mean decrease in accuracy and gini statistics, with the three greatest mean decrease accuracy predictors being the three lowest mean decrease in gini predictors. Interestingly, we also saw the first and only negative mean decreases in accuracy, with the negative predictors being trstlgl, pplfair, pplhlp, and trstsci. Interstingly, this would seem to conflict with the 70/30 model, where pplhlp showed up rather frequently, and the mean decrease in gini index, where trstsci - the lowest mean decrease in accuracy with a whopping -7.689876 - had the greatest mean decrease in gini index. Regardless, the Nordics had the highest accuracy rate of any region at 96.35%, which is pretty good.</p>
 </section>
-<section id="united-kingdom" class="level3">
-<h3 class="anchored" data-anchor-id="united-kingdom">United Kingdom</h3>
+<section id="united-kingdom" class="level4">
+<h4 class="anchored" data-anchor-id="united-kingdom">United Kingdom</h4>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>
-=== Confusion Matrix for United Kingdom ===
+=== Confusion Matrix for United Kingdom (70/30) ===
          Actual
 Predicted High Low Medium
    High      9   9      8
    Low       9  10     11
    Medium    8   7      7
 
-Accuracy for United Kingdom: 33.33%
+Accuracy for United Kingdom (70/30): 33.33%
 
-Decision Tree for United Kingdom :</code></pre>
+Decision Tree for United Kingdom (70/30) :</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Data_Report_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Data_Report_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-12-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -539,29 +815,72 @@ Pruned Accuracy for United Kingdom: 46.15%
 
 Pruned Tree for United Kingdom :</code></pre>
 </div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+=== Confusion Matrix for United Kingdom (80/20) ===
+         Actual
+Predicted High Low Medium
+   High      7   4      4
+   Low       3   4      7
+   Medium    7   9      6
+
+Accuracy for United Kingdom (80/20): 33.33%
+
+Decision Tree for United Kingdom (80/20) :</code></pre>
+</div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Data_Report_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-12-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-12-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>United Kingdom Random Forest Variable Importance             High         Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
-ppltrst  5.189081  4.14052803 -2.2114493             4.922356         32.53477
-pplhlp   8.538290 -1.35243639 -2.3890649             7.331631         31.07817
-pplfair  7.635267 -2.78555748  1.5597983             7.652810         29.39468
-trstprl  5.002036 -0.46940074 -2.0615320             4.252290         32.59707
-trstlgl  6.131851  0.25854508 -3.6183567             4.949231         33.42380
-trstplc  7.603558 -0.48550890  1.4454857             7.706264         36.07982
-trstplt 10.334646 -0.09808197  1.0603321            10.395597         26.97280
-trstprt  9.217370 -0.51824570 -1.8878018             8.496362         26.82672
-trstsci  9.830274  6.17466607  0.5031837            10.535508         35.21013</code></pre>
+<pre><code>
+=== PRUNED Confusion Matrix for United Kingdom (80/20) ===
+         Actual
+Predicted High Low Medium
+   High      8   5      7
+   Low       7  10      8
+   Medium    2   2      2
+
+Pruned Accuracy for United Kingdom (80/20): 39.22%
+
+Pruned Tree for United Kingdom (80/20) :</code></pre>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="Data_Report_files/figure-html/unnamed-chunk-7-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-12-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The UK had the lowest overall performance, with accuracy increasing from 33.3% to 46.2% (70/30) and reaching only 39.2% (80/20) after pruning. The trees were fairly shallow, and the splits leaned heavily on pplhlp, ppltrst, and trstprl. The relatively uniform distributions of these features across trust levels and the lack of data likely contributed to the model’s struggle to separate classes effectively.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>United Kingdom Random Forest Variable Importance             High        Low     Medium MeanDecreaseAccuracy MeanDecreaseGini
+ppltrst  6.335306  1.4900501 -1.1298153             5.860120         31.86546
+pplhlp   7.730095 -0.6659739  0.3502832             7.306723         31.51567
+pplfair  9.063822 -2.1780359  3.3065856             9.302467         30.34422
+trstprl  7.207988 -1.0246463 -1.3400533             6.605943         33.04972
+trstlgl  6.284401 -1.5874431 -0.9914052             5.637131         32.70845
+trstplc  6.298371  2.4497173  1.4917256             6.672516         35.98215
+trstplt 10.069290 -2.0895011  2.6079401            10.187871         26.74223
+trstprt  8.638965  0.2662680 -1.1138713             8.245680         26.73694
+trstsci 10.033977  6.1684543  3.1815287            11.232579         35.55095</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Data_Report_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -577,8 +896,24 @@ region.pred High  Low Medium
 Random Forest Accuracy for United Kingdom: 88.70%</code></pre>
 </div>
 </div>
-<p>[analysis]</p>
-<hr>
+<p>Finally, the United Kingdom had one predictor in the top three of both the mean decrease in accuracy and the mean decrease in gini index, which would be trstsci. Though trstsci does appear in the trees around the third level rather consistently, it never appears higher than that. The UK had an accuracy of 88.70%.</p>
+</section>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>Based on our results using ESS Round 10 data, there is a clear link between social trust and the extent to which democracy is seen to be democratic across Europe. Linear Discriminant Analysis (LDA) models were excellent, especially in regions like the Nordics and Central Europe, whose trust indicators were evenly spaced. Trust in science (trstsci) and trust in parliament (trstprl) were consistently among the top predictors.</p>
+<p>Decision trees offered interpretability but tended to be less precise. Pruning improved results in certain regions (e.g., Nordics, Central Europe) but had a comparatively small impact elsewhere, illustrating how trust distribution and data structure affect the performance of the model. Meanwhile, random forests were far more accurate, but they were much harder to interpret. Notably, they also had a massive bias towards predicting high results.</p>
+</section>
+<section id="together-lda-and-decision-tree-results-suggest-that-trust-in-institutions-plays-a-central-role-in-shaping-democratic-values.-regional-variation-in-predictor-importance-reflects-europes-diverse-political-climates-emphasizing-the-value-of-using-multiple-approaches-for-a-more-complete-understanding." class="level2">
+<h2 class="anchored" data-anchor-id="together-lda-and-decision-tree-results-suggest-that-trust-in-institutions-plays-a-central-role-in-shaping-democratic-values.-regional-variation-in-predictor-importance-reflects-europes-diverse-political-climates-emphasizing-the-value-of-using-multiple-approaches-for-a-more-complete-understanding.">Together, LDA and decision tree results suggest that trust in institutions plays a central role in shaping democratic values. Regional variation in predictor importance reflects Europe’s diverse political climates, emphasizing the value of using multiple approaches for a more complete understanding.</h2>
+<section id="biblography" class="level3 center">
+<h3 class="anchored" data-anchor-id="biblography">Biblography</h3>
+</section>
+<ul>
+<li><p>European Social Survey European Research Infrastructure (ESS ERIC) (2023) ESS round 10 - 2020. Democracy, Digital social contacts. Sikt - Norwegian Agency for Shared Services in Education and Research. https://doi.org/10.21338/NSD-ESS10-2020.</p></li>
+<li><p>Kushner, David (April 1997). “Self-Perception and Identity in Contemporary Turkey”. Journal of Contemporary History. 32 (2): 219–33. doi:10.1177/002200949703200206. JSTOR 261242. S2CID 159374632.</p></li>
+<li><p>Geoffrey O’Connor (Producer), &amp; Geoffrey O’Connor (Director). (1995). Amazon Journal. [Video/DVD] Filmakers Library. https://video.alexanderstreet.com/watch/amazon-journal Kelly, N. (Host). (2025, April, 10). Nayib Bukele. (32) [Audio podcast episode]. No Gods No Mayors. Production Company. URL.</p></li>
+</ul>
 </section>
 
 </main>
