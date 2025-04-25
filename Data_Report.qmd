@@ -17,7 +17,7 @@ For the purposes of our project, we will be looking at the relationship between 
 
 Our analysis focused on 9 predictors of social trust: *ppltrst, pplhlp, pplfair, trstprl, trstplt, trstlgl, trstplc, trstprt,* and *trstsci,* and the response variable implvdm - importance of democracy for \[country\]. All were measured on a 11-step Likert scale (0-10), but the response variable was partitioned into categories of Low, Medium or High, as their relative properties are of more interest than predicting the exact numeric response. The data was cleaned and preprocessed split into training and testing sets, then linear discriminant analysis and decision tree models were used to identify relationships with reported importance of democracy. We evaluated the performance of each model and discussed their relative strengths and limitations. Comparing LDA and decision trees will hopefully allow a more complete understanding of democracy’s relative worth within Europe.
 
-### Linear Discriminant Analysis Model (Ais, Jacqueline, Samuel):
+### Linear Discriminant Analysis Model (Ais, Samuel):
 
 Linear Discriminant Analysis (LDA) is the parametric model best suited to classification problems with more than two responses. As with any parametric method, it comes with assumptions. 1) The classes can be described using a multivariate normal distribution. 2) The classes share the same covariance matrix. 3) The observations are independent of each other. LDA’s benefits are in its simplicity and scalability, while LDA’s weaknesses lie in assumption 2 and its sensitivity to outliers/extreme values.\
 
@@ -48,7 +48,31 @@ Western Central Europe : \~87.67%\
 
 The overall accuracy of the K-fold was \~87.68%.\
 
-### Decision Tree & Random Forest Model (Ryan, Tan):
+### Decision Tree & Random Forest Model (Tan, Jacqueline, Ryan):
+
+### Decision Trees
+A decision tree is a supervised machine learning model used for classification or regression tasks. It works by splitting the data into branches based on feature values, forming a tree-like structure where each internal node represents a decision rule, and each leaf node represents an outcome. The goal is to create splits that best separate the target classes, making the model easy to interpret and visualize. Decision trees are particularly useful for understanding which features are most important in predicting the outcome.
+
+In our function, the dataset is first balanced across classes using stratified sampling, ensuring equal representation of each class. A stratified train-test split is then applied based on a user-defined ratio (default 70/30). The model is trained on the training set and evaluated on the test set using a confusion matrix and accuracy metric. The resulting tree structure is visualized to aid interpretation, and the function returns performance metrics for further analysis.
+
+Excerpt for Code: 
+
+min_n <- min(table(data$dem_imp))
+  data_bal <- data %>%
+    group_by(dem_imp) %>%
+    slice_sample(n = min_n) %>%
+    ungroup()
+
+train_idx <- createDataPartition(data_bal$dem_imp, p = split_ratio, list = FALSE)
+  train_data <- data_bal[train_idx, ]
+  test_data <- data_bal[-train_idx, ]
+
+tree_model <- tree(dem_imp ~ ppltrst + pplhlp + pplfair + trstprl + trstlgl +
+                       trstplc + trstplt + trstprt + trstsci,
+                     data = train_data)
+  predictions <- predict(tree_model, test_data, type = "class")
+  conf_matrix <- table(Predicted = predictions, Actual = test_data$dem_imp)
+
 
 ```{r}
 #| echo: false
@@ -175,7 +199,7 @@ random_forest_model <- function(region_data, region_name) {
   
   return(region.forest)
 }
-
+ ,m  ,..
 
 # ================================
 # Pre-Plotting Processing
@@ -220,7 +244,9 @@ central.tree <- decision_tree_model(central.data_split$train, central.data_split
 central.pruned_tree <- get_prune_chart(central.tree, central.data_split$train, central.data_split$test, "Central Europe (80/20)")
 ```
 
-\[analysis\]
+
+In Central Europe, both the 70/30 and 80/20 splits produced moderately complex trees with an accuracy of 48.6% and 52.4%, respectively. With pruning, the accuracies were 49.5% and 52.4%, respectively. The minimal differences suggest that pruning helped simplify the model, but didn’t significantly boost performance. This indicates that Central Europe’s predictor space contains enough variation for meaningful class separation. The most influential features were trstprl and trstsci, followed by pplfair and pplhlp. Notably, the distributions of these trust variables are skewed toward higher values, which likely made it easier for the model to differentiate between classes—especially in the 80/20 configuration. Overall, the model struggles to classify the “Low” and “Medium”, suggesting there is potential underfitting or overlapping features. 
+
 
 ```{r}
 #| echo: false
@@ -246,7 +272,9 @@ eastern.tree <- decision_tree_model(eastern.data_split$train, eastern.data_split
 eastern.pruned_tree <- get_prune_chart(eastern.tree, eastern.data_split$train, eastern.data_split$test, "Eastern Europe (80/20)")
 
 ```
-\[analysis\]
+
+Eastern Europe showed modest improvements in accuracy after pruning for the 70/30 split, rising from 40.2% to 44.%. On the other hand, pruning reduced the accuracy from 44.2% to 43.6% for the 80/20 split. The model primarily splits on trstprl and trstsci, though the distribution plots reveal more constrained variation in key features like pplhlp and ppltrst. This limited variability may have made it harder for the model to confidently distinguish between levels of democratic importance. While pruning did help to reduce noise, the lack of strong separation in the data itself might be holding back overall performance.
+
 
 ```{r}
 #| echo: false
@@ -273,7 +301,8 @@ southern.tree <- decision_tree_model(southern.data_split$train, southern.data_sp
 
 southern.pruned_tree <- get_prune_chart(southern.tree, southern.data_split$train, southern.data_split$test, "Southern Europe (80/20)")
 ```
-\[analysis\]
+
+In Southern Europe, pruning did not improve the model’s performance. Accuracy stayed at 41.3% (70/30) and  39.8% (80/20). In fact, pruning the tree suggests the model couldn’t find meaningful splits. This may reflect the region’s heavily skewed distributions, where trust levels in variables like trstprl and pplfair are generally low. Although class balancing was applied during training, the test set distributions may have remained skewed, limiting generalizability.
 
 ```{r}
 #| echo: false
@@ -297,7 +326,8 @@ west_central.tree <- decision_tree_model(west_central.data_split$train, west_cen
 
 west_central.pruned_tree <- get_prune_chart(west_central.tree, west_central.data_split$train, west_central.data_split$test, "West-Central Europe (80/20)")
 ```
-\[analysis\]
+
+Western Central Europe had the strongest overall performance, with accuracy stayed 54.44% after pruning in the 70/30 split, but increased to 50% in the 80/20 split. Minimal improvement after pruning suggests the tree had already captured most of the useful signal without overfitting, and the predictor space was not overly complex. The trees here were well-structured and used a balanced mix of predictors like trstsci, pplhlp, and pplfair. The relatively even distribution of trust scores across the population likely made it easier for the model to learn meaningful patterns. This region’s results suggest that when trust measures are well-distributed, decision trees can perform quite well.
 
 ```{r}
 #| echo: false
@@ -320,7 +350,8 @@ nordics.tree <- decision_tree_model(nordics.data_split$train, nordics.data_split
 
 nordics.pruned_tree <- get_prune_chart(nordics.tree, nordics.data_split$train, nordics.data_split$test, "Nordics (80/20)")
 ```
-\[analysis\]
+
+In the Nordic countries, pruning led to noticeable gains in accuracy—from 39.2% to 51.0% (70/30) and from 36.4% to 42.4% (80/20). Despite relatively simple pruned trees, performance improved, likely due to the consistent and high-trust distributions seen in features like pplhlp and trstsci. These predictors likely provided enough signal for the model once overfitting was reduced. However, the skew toward high values may also make it harder to draw distinctions between the Medium and High categories of democratic importance, which could be why the improvement levels off below 55%.
 
 
 ```{r}
@@ -341,13 +372,14 @@ uk.tree <- decision_tree_model(uk.data_split$train, uk.data_split$test, "United 
 uk.pruned_tree <- get_prune_chart(uk.tree, uk.data_split$train, uk.data_split$test, "United Kingdom")
 
 
-uk.data_split <- prepare_data_split(uk_2)
+uk.data_split <- prepare_data_split(uk_2, 0.8)
 
 uk.tree <- decision_tree_model(uk.data_split$train, uk.data_split$test, "United Kingdom (80/20)")
 
 uk.pruned_tree <- get_prune_chart(uk.tree, uk.data_split$train, uk.data_split$test, "United Kingdom (80/20)")
 ```
-\[analysis\]
+
+The UK had the lowest overall performance, with accuracy increasing from 33.3% to 46.2% (70/30) and reaching only 39.2% (80/20) after pruning. The trees were fairly shallow, and the splits leaned heavily on pplhlp, ppltrst, and trstprl. The relatively uniform distributions of these features across trust levels and the lack of data likely contributed to the model’s struggle to separate classes effectively. 
 
 ```{r}
 #| echo: false
