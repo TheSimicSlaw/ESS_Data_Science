@@ -388,9 +388,20 @@ uk.random_forest <- random_forest_model(uk_2, "United Kingdom")
 
 ### Conclusion
 
-Based on our results using ESS Round 10 data, there is a clear link between social trust and the extent to which democracy is seen to be democratic across Europe. Linear Discriminant Analysis (LDA) models were very good, especially in regions like the Nordics and Central Europe, whose trust indicators were evenly spaced. trust in science (trstsci) and trust in parliament (trstprl) were consistently among the top predictors.
+Based on our results using ESS Round 10 data, there is a clear link between social trust and the extent to which democracy is seen to be democratic across Europe. Linear Discriminant Analysis (LDA) models were excellent, especially in regions like the Nordics and Central Europe, whose trust indicators were evenly spaced. Trust in science (trstsci) and trust in parliament (trstprl) were consistently among the top predictors.
 
-Decision trees offered interpretability but tended to be less precise. Pruning improved results in certain regions (e.g., Nordics, Central Europe) but had comparatively small impact elsewhere, illustrating how trust distribution and data structure affect the performance of the model.
+Decision trees offered interpretability but tended to be less precise. Pruning improved results in certain regions (e.g., Nordics, Central Europe) but had a comparatively small impact elsewhere, illustrating how trust distribution and data structure affect the performance of the model.
 
 Together, LDA and decision tree results suggest that trust in institutions plays a central role in shaping democratic values. Regional variation in predictor importance reflects Europe’s diverse political climates, emphasizing the value of using multiple approaches for a more complete understanding.
 ------------------------------------------------------------------------
+
+::: {.center}
+### Biblography
+:::
+
+
+- European Social Survey European Research Infrastructure (ESS ERIC) (2023) ESS round 10 - 2020. Democracy, Digital social contacts. Sikt - Norwegian Agency for Shared Services in Education and Research. https://doi.org/10.21338/NSD-ESS10-2020.
+
+- Kushner, David (April 1997). "Self-Perception and Identity in Contemporary Turkey". Journal of Contemporary History. 32 (2): 219–33. doi:10.1177/002200949703200206. JSTOR 261242. S2CID 159374632.
+
+- Geoffrey O'Connor (Producer), & Geoffrey O'Connor (Director). (1995). Amazon Journal. [Video/DVD] Filmakers Library. https://video.alexanderstreet.com/watch/amazon-journal Kelly, N. (Host). (2025, April, 10). Nayib Bukele. (32) [Audio podcast episode]. No Gods No Mayors. Production Company. URL. 
