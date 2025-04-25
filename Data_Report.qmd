@@ -386,4 +386,11 @@ The UK had the lowest overall performance, with accuracy increasing from 33.3% t
 uk.random_forest <- random_forest_model(uk_2, "United Kingdom")
 ```
 
+### Conclusion
+
+Based on our results using ESS Round 10 data, there is a clear link between social trust and the extent to which democracy is seen to be democratic across Europe. Linear Discriminant Analysis (LDA) models were very good, especially in regions like the Nordics and Central Europe, whose trust indicators were evenly spaced. trust in science (trstsci) and trust in parliament (trstprl) were consistently among the top predictors.
+
+Decision trees offered interpretability but tended to be less precise. Pruning improved results in certain regions (e.g., Nordics, Central Europe) but had comparatively small impact elsewhere, illustrating how trust distribution and data structure affect the performance of the model.
+
+Together, LDA and decision tree results suggest that trust in institutions plays a central role in shaping democratic values. Regional variation in predictor importance reflects Europe’s diverse political climates, emphasizing the value of using multiple approaches for a more complete understanding.
 ------------------------------------------------------------------------
