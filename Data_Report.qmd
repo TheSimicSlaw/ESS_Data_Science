@@ -199,7 +199,6 @@ random_forest_model <- function(region_data, region_name) {
   
   return(region.forest)
 }
- ,m  ,..
 
 # ================================
 # Pre-Plotting Processing
@@ -253,7 +252,7 @@ In Central Europe, both the 70/30 and 80/20 splits produced moderately complex t
 central.random_forest <- random_forest_model(central_2, "Central Europe")
 ```
 
-It's rather interesting that trstplt, trstprt, and trstprt have the highest mean decrease accuracy and the lowest mean decrease gini. Given that the gini plot is rather even while the accuracy plot is more staggered, I'd be inclined to say that the mean decrease accuracy and thus trstplt, trstprt, and trstprt are ore significant.
+It's rather interesting that trstplt, trstprt, and trstprt have the highest mean decrease accuracy and the lowest mean decrease gini. Given that the gini plot is rather even while the accuracy plot is more staggered, I'd be inclined to say that the mean decrease accuracy and thus trstplt, trstprt, and trstprt are ore significant. The accuracy rate of 90.47% is rather solid.
 
 #### Eastern Europe
 
@@ -281,7 +280,7 @@ Eastern Europe showed modest improvements in accuracy after pruning for the 70/3
 eastern.random_forest <- random_forest_model(eastern_2, "Eastern Europe")
 ```
 
-Here, trstsci and trstplc are the highest for mean decrease accuracy and both in the top three for the mean decrease gini. This fits with the decision trees above, as trstsci and trstplc are consistently the main two splits.
+Here, trstsci and trstplc are the highest for mean decrease accuracy and both in the top three for the mean decrease gini. This fits with the decision trees above, as trstsci and trstplc are consistently the main two splits. The accuracy rate is the lowest of all the regions at 82.95%, but the consistency is informative, and it's not a bad accuracy rate.
 
 
 #### Southern Europe
@@ -309,6 +308,8 @@ In Southern Europe, pruning did not improve the model’s performance. Accuracy 
 southern.random_forest <- random_forest_model(southern_2, "Southern Europe")
 ```
 
+Like most of the random forest models here, the mean decrease in accuracy and the mean decrease in gini index are not particularly consistent. However, as the mean decrease in accuracy has a greater difference between the top chunk and the bottom chunk than gini does, I'm inclined to trust that more. The accuracy rate of 86.66% is not the best, but it's still solid.
+
 #### West-Central Europe
 
 ```{r}
@@ -334,6 +335,8 @@ Western Central Europe had the strongest overall performance, with accuracy stay
 west_central.random_forest <- random_forest_model(west_central_2, "West-Central Europe")
 ```
 
+West-Central Europe is an interesting case, as while the predictor with the greatest mean decrease in accuracy, trstplt, is at the bottom of the gini index metric, the second-greatest mean decrease in accuracy, trstsci, is the greatest mean decrease in gini index. This would seem to match the 70/30 tree, but trstsci is not as prominent in 80/20, not even appearing on the pruned tree. Regardless, the accuracy rate of 89.86% is still rather good.
+
 #### Nordics
 
 ```{r}
@@ -358,6 +361,8 @@ In the Nordic countries, pruning led to noticeable gains in accuracy—from 39.2
 #| echo: false
 nordics.random_forest <- random_forest_model(nordics_2, "Nordics")
 ```
+
+The Nordics saw a return to the inconsistent mean decrease in accuracy and gini statistics, with the three greatest mean decrease accuracy predictors being the three lowest mean decrease in gini predictors. Interestingly, we also saw the first and only negative mean decreases in accuracy, with the negative predictors being trstlgl, pplfair, pplhlp, and trstsci. Interstingly, this would seem to conflict with the 70/30 model, where pplhlp showed up rather frequently, and the mean decrease in gini index, where trstsci - the lowest mean decrease in accuracy with a whopping -7.689876 - had the greatest mean decrease in gini index. Regardless, the Nordics had the highest accuracy rate of any region at 96.35%, which is pretty good.
 
 
 
@@ -386,11 +391,14 @@ The UK had the lowest overall performance, with accuracy increasing from 33.3% t
 uk.random_forest <- random_forest_model(uk_2, "United Kingdom")
 ```
 
+Finally, the United Kingdom had one predictor in the top three of both the mean decrease in accuracy and the mean decrease in gini index, which would be trstsci. Though trstsci does appear in the trees around the third level rather consistently, it never appears higher than that. The UK had an accuracy of 88.70%.
+
+
 ### Conclusion
 
 Based on our results using ESS Round 10 data, there is a clear link between social trust and the extent to which democracy is seen to be democratic across Europe. Linear Discriminant Analysis (LDA) models were excellent, especially in regions like the Nordics and Central Europe, whose trust indicators were evenly spaced. Trust in science (trstsci) and trust in parliament (trstprl) were consistently among the top predictors.
 
-Decision trees offered interpretability but tended to be less precise. Pruning improved results in certain regions (e.g., Nordics, Central Europe) but had a comparatively small impact elsewhere, illustrating how trust distribution and data structure affect the performance of the model.
+Decision trees offered interpretability but tended to be less precise. Pruning improved results in certain regions (e.g., Nordics, Central Europe) but had a comparatively small impact elsewhere, illustrating how trust distribution and data structure affect the performance of the model. Meanwhile, random forests were far more accurate, but they were much harder to interpret. Notably, they also had a massive bias towards predicting high results.
 
 Together, LDA and decision tree results suggest that trust in institutions plays a central role in shaping democratic values. Regional variation in predictor importance reflects Europe’s diverse political climates, emphasizing the value of using multiple approaches for a more complete understanding.
 ------------------------------------------------------------------------
