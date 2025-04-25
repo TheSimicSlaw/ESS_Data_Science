@@ -28,9 +28,6 @@ $$g_i(x) = x^T \Sigma^{-1} \mu_i - \frac{1}{2} \mu_i^T \Sigma^{-1} \mu_i + \ln(P
 Where x is the input feature vector, μi is the mean vector of class i, Σ is the shared covariance matrix and P(ωi​) is the prior probability of class i.\
 
 Our reasoning for using linear discriminant variance on classes derived from the implvdm - Low (0-4), Medium (5-6), and High (7-10) - henceforth dem_imp, rather than splitting at 5 for logistic regression is that higher point Likert scales are designed to measure granularity, especially within the context of social science research. Our objective was to determine which factors were useful for predicting dem_imp and whether they varied based on regionality.\
-Excerpt from code:\
-
-[Add code here]
 
 The test accuracies in the order given above were 0.8914, 0.8278, 0.9465, 0.8688, 0.8491, and 0.8713.\
 
