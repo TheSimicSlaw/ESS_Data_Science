@@ -398,6 +398,7 @@ Based on our results using ESS Round 10 data, there is a clear link between soci
 Decision trees offered interpretability but tended to be less precise. Pruning improved results in certain regions (e.g., Nordics, Central Europe) but had a comparatively small impact elsewhere, illustrating how trust distribution and data structure affect the performance of the model. Meanwhile, random forests were far more accurate, but they were much harder to interpret. Notably, they also had a massive bias towards predicting high results.
 
 Together, LDA and decision tree results suggest that trust in institutions plays a central role in shaping democratic values. Regional variation in predictor importance reflects Europe’s diverse political climates, emphasizing the value of using multiple approaches for a more complete understanding.
+
 ------------------------------------------------------------------------
 
 ::: {.center}
